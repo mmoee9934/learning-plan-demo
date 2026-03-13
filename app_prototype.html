@@ -4573,10 +4573,9 @@
 
     function renderFlow(targetIndex, showHistory = true) {
       if (state.skipBaseInfo && targetIndex < 3) targetIndex = 3;
+      const prevStep = state.stepIndex;
+      const canAppend = showHistory && targetIndex === prevStep + 1;
       state.stepIndex = targetIndex;
-      resetChat(false);
-      const backRow = document.getElementById('back-step-row');
-      if (backRow) backRow.style.display = state.skipBaseInfo ? 'none' : 'flex';
       const steps = [
         { ask: askGrade },
         { ask: askProvince },
@@ -4588,10 +4587,15 @@
         { ask: askDailyHours },
         { ask: () => generatePlan() }
       ];
-      if (showHistory) {
-        for (let i = 0; i < targetIndex; i += 1) {
-          if (state.skipBaseInfo && i < 2) continue;
-          steps[i].ask(false);
+      if (!canAppend) {
+        resetChat(false);
+        const backRow = document.getElementById('back-step-row');
+        if (backRow) backRow.style.display = state.skipBaseInfo ? 'none' : 'flex';
+        if (showHistory) {
+          for (let i = 0; i < targetIndex; i += 1) {
+            if (state.skipBaseInfo && i < 2) continue;
+            steps[i].ask(false);
+          }
         }
       }
       if (targetIndex < steps.length) {
