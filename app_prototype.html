@@ -1392,7 +1392,7 @@
     .back-step-row {
       position: sticky;
       bottom: 0;
-      padding: 4px 18px 8px;
+      padding: 2px 16px calc(6px + env(safe-area-inset-bottom));
       display: flex;
       justify-content: flex-start;
       background: transparent;
@@ -3925,6 +3925,8 @@
       const body = document.getElementById('chat-body');
       if (!body) return;
       if (!force && Date.now() < autoScrollLockUntil) return;
+      const nearBottom = isNearBottom();
+      if (!force && nearBottom) userStuckToBottom = true;
       if (force || userStuckToBottom) {
         body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
         userStuckToBottom = true;
