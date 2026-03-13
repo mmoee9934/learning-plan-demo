@@ -712,12 +712,9 @@
       border-radius: 0;
       box-shadow: none;
       border: none;
-      overflow-x: hidden;
-      overflow-y: visible;
+      overflow: hidden;
       position: relative;
       min-height: 100vh;
-      min-height: 100dvh;
-      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .assistant-hero {
@@ -800,7 +797,6 @@
       overflow-y: auto;
       scroll-behavior: smooth;
       background: transparent;
-      padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
 
     .bubble {
@@ -1396,7 +1392,7 @@
     .back-step-row {
       position: sticky;
       bottom: 0;
-      padding: 0 16px calc(4px + env(safe-area-inset-bottom));
+      padding: 4px 18px 8px;
       display: flex;
       justify-content: flex-start;
       background: transparent;
@@ -3913,8 +3909,8 @@
     function isNearBottom() {
       const body = document.getElementById('chat-body');
       if (!body) return true;
-      const diff = body.scrollHeight - body.scrollTop - body.clientHeight;
-      return Math.abs(diff) <= 1;
+      const threshold = 80;
+      return body.scrollHeight - body.scrollTop - body.clientHeight < threshold;
     }
 
     function showNewMessageTip() {
