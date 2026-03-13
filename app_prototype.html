@@ -915,7 +915,9 @@
       border-radius: 16px;
       background: #fff;
       padding: 8px;
-      max-height: 220px;
+      max-height: 320px;
+      width: 100%;
+      max-width: 100%;
       overflow-y: auto;
       scroll-snap-type: y mandatory;
     }
@@ -1390,7 +1392,7 @@
     .back-step-row {
       position: sticky;
       bottom: 0;
-      padding: 8px 18px 12px;
+      padding: 4px 18px 8px;
       display: flex;
       justify-content: flex-start;
       background: transparent;
@@ -3900,6 +3902,7 @@
     }
 
     let userStuckToBottom = true;
+    let autoScrollLockUntil = 0;
 
     function isNearBottom() {
       const body = document.getElementById('chat-body');
@@ -3921,6 +3924,7 @@
     function scrollChat(force = false) {
       const body = document.getElementById('chat-body');
       if (!body) return;
+      if (!force && Date.now() < autoScrollLockUntil) return;
       if (force || userStuckToBottom) {
         body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
         userStuckToBottom = true;
@@ -4263,6 +4267,7 @@
       setPlanActionsEnabled(card, true);
       renderDifficulty(plan);
       renderCalendar(plan);
+      scrollToPlanPreview();
       if (!state.plannedSubjects.includes(state.answers.subject)) {
         state.plannedSubjects.push(state.answers.subject);
       }
@@ -4402,6 +4407,21 @@
 
     function sameDate(a, b) {
       return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+
+    function scrollToPlanPreview() {
+      const body = document.getElementById('chat-body');
+      if (!body) return;
+      const highlights = body.querySelectorAll('.bubble.highlight');
+      const planCards = body.querySelectorAll('.plan-card');
+      const highlight = highlights[highlights.length - 1];
+      const planCard = planCards[planCards.length - 1];
+      if (!highlight || !planCard) return;
+      const targetTop = Math.max(0, highlight.offsetTop - 12);
+      autoScrollLockUntil = Date.now() + 600;
+      body.scrollTo({ top: targetTop, behavior: 'smooth' });
+      userStuckToBottom = true;
+      hideNewMessageTip();
     }
 
     function showAdjustMenu() {
