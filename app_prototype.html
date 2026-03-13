@@ -1,0 +1,4678 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>领航伴学 - 学习计划原型</title>
+  <script>
+    window.AI_ENDPOINT = "https://fudaojihua1-0g46d4n79af5f5d9-1410923214.ap-shanghai.app.tcloudbase.com/api/motivation";
+  </script>
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --card: #ffffff;
+      --ink: #0b1220;
+      --muted: #6a7686;
+      --accent: #1b7cff;
+      --accent-2: #25d0c8;
+      --warm: #ffb649;
+      --danger: #ff6a5f;
+      --soft-blue: #e6f0ff;
+      --soft-teal: #e7fbf9;
+      --line: #e8edf3;
+      --shadow: 0 10px 30px rgba(22, 44, 89, 0.12);
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 10% 0%, #ffffff, #f4f7fb 35%, #f6f4ef 100%);
+      font-family: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+    }
+
+    .canvas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    .plan-mode .canvas {
+      grid-template-columns: 1fr;
+    }
+
+    .plan-mode body {
+      background: linear-gradient(180deg, #ffffff 0%, #f6f7fb 40%, #f9f5ef 100%);
+    }
+
+    .plan-mode .page {
+      padding-bottom: 0;
+    }
+
+    .phone {
+      background: #fdfdfd;
+      border-radius: 36px;
+      box-shadow: 0 18px 48px rgba(10, 22, 51, 0.2);
+      border: 1px solid rgba(0,0,0,0.05);
+      overflow: hidden;
+      position: relative;
+      min-height: 760px;
+    }
+
+    .home-page {
+      background: #fdfdfd;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      overflow: hidden;
+      position: relative;
+      min-height: 760px;
+    }
+
+    .study-page {
+      background: #f5f6fa;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      overflow: hidden;
+      position: relative;
+      min-height: 760px;
+      padding-bottom: 64px;
+    }
+
+    .calendar-page {
+      background: #fdfdfd;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      overflow: hidden;
+      position: relative;
+      min-height: 760px;
+    }
+
+    .page-image {
+      width: 100%;
+      display: block;
+    }
+
+    .study-status {
+      padding: 12px 18px 4px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      color: #222;
+      font-size: 12px;
+    }
+
+    .study-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 18px 4px;
+    }
+
+    .study-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1b1b1b;
+    }
+
+    .study-calendar-btn {
+      border: none;
+      background: transparent;
+      color: #ff7a00;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .study-calendar-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      background: #ff7a00;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .study-subject {
+      padding: 0 18px 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .study-hero {
+      padding: 0 18px 10px;
+    }
+
+    .study-cover {
+      background: linear-gradient(180deg, #e8f0ff, #eef4ff);
+      border-radius: 18px;
+      height: 160px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e1e8f5;
+    }
+
+    .study-cover-card {
+      width: 96px;
+      height: 120px;
+      border-radius: 12px;
+      background: #f06b58;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      box-shadow: 0 10px 20px rgba(240, 107, 88, 0.25);
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .study-course-bar {
+      background: #fff;
+      border-radius: 16px;
+      margin: 12px 18px 0;
+      padding: 12px 12px;
+      border: 1px solid #eef1f6;
+    }
+
+    .study-course-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .study-course-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .study-course-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      color: #8a95a3;
+    }
+
+    .study-course-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1px solid #e6eaf0;
+      background: #f7f8fb;
+      color: #7b8794;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .study-course-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .study-teacher {
+      font-size: 11px;
+      color: #8a95a3;
+    }
+
+    .knowledge-btn {
+      border: none;
+      background: #fff5e8;
+      color: #ff7a00;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+
+    .study-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 10px 18px 6px;
+      overflow-x: auto;
+    }
+
+    .study-tab {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #fff;
+      color: #8a95a3;
+      font-size: 11px;
+      white-space: nowrap;
+      border: 1px solid #e5e9ef;
+    }
+
+    .study-tab.active {
+      background: #ffe9d6;
+      color: #ff7a00;
+      border-color: #ffd2a5;
+    }
+
+    .study-content {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 12px;
+      padding: 0 18px 16px;
+    }
+
+    .study-side {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 11px;
+      color: #8a95a3;
+    }
+
+    .study-side-item {
+      padding-left: 8px;
+      border-left: 2px solid #eef1f6;
+    }
+
+    .study-side .active {
+      color: #ff7a00;
+      font-weight: 600;
+      border-color: #ff7a00;
+    }
+
+    .study-card {
+      background: #fff;
+      border: 1px solid #eef1f6;
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .study-card h4 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .study-card .time {
+      font-size: 11px;
+      color: #9aa6b2;
+    }
+
+    .study-card .play {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #ff8a00;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex: 0 0 26px;
+    }
+
+    .study-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 12px;
+      border-top: 1px solid var(--line);
+      z-index: 3;
+    }
+
+    .study-nav span {
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .study-nav span.active {
+      color: #ff8a00;
+      font-weight: 600;
+    }
+
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px;
+    }
+
+    .calendar-header button {
+      border: none;
+      background: transparent;
+      font-size: 16px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .calendar-title-main {
+      font-weight: 700;
+      font-size: 16px;
+      color: #222;
+    }
+
+    .calendar-card {
+      margin: 0 18px;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #eef1f6;
+      padding: 12px;
+      box-shadow: 0 6px 18px rgba(24, 44, 76, 0.06);
+    }
+
+    .calendar-card .row {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      text-align: center;
+      font-size: 11px;
+      color: #8a95a3;
+    }
+
+    .calendar-card .date-row {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .calendar-card .date-row .active {
+      background: #ff7a00;
+      color: #fff;
+      border-radius: 10px;
+      padding: 6px 0;
+    }
+
+    .calendar-date-title {
+      margin: 16px 18px 8px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .calendar-item {
+      margin: 0 18px;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #eef1f6;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .calendar-item .tag {
+      background: #ffefe0;
+      color: #ff7a00;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      margin-right: 8px;
+    }
+
+    .calendar-item .info {
+      flex: 1;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .calendar-item .time {
+      font-size: 11px;
+      color: #9aa6b2;
+    }
+    .study-date-hotspot {
+      position: absolute;
+      top: 26px;
+      right: 18px;
+      width: 80px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .status-bar {
+      padding: 12px 18px 6px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .status-pill {
+      width: 180px;
+      height: 28px;
+      border-radius: 18px;
+      background: #0a0a0a;
+      position: relative;
+    }
+
+    .phone-header {
+      padding: 6px 18px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-family: "STKaiti", "PingFang SC", serif;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: 0.08em;
+    }
+
+    .grade-chip {
+      padding: 8px 14px;
+      border-radius: 14px;
+      background: #f1f3f6;
+      font-size: 12px;
+      color: #444;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .home-content {
+      padding: 0 18px 18px;
+    }
+
+    .banner {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+    }
+
+    .banner img {
+      width: 100%;
+      display: block;
+    }
+
+    .entry-card {
+      margin-top: 14px;
+      background: #0e1b33;
+      color: #f6fbff;
+      border-radius: 18px;
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 12px 28px rgba(20, 46, 88, 0.25);
+      display: none;
+    }
+
+    .entry-card.active { display: block; }
+
+    .entry-card::before {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      right: -40px;
+      top: -60px;
+      background: radial-gradient(circle, rgba(37,208,200,0.6), transparent 60%);
+    }
+
+    .entry-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .entry-title {
+      font-size: 16px;
+      margin: 6px 0 8px;
+    }
+
+    .entry-meta {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .entry-action {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .entry-btn {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #25d0c8, #1b7cff);
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(37,208,200,0.35);
+    }
+
+    .entry-status {
+      background: rgba(255,255,255,0.12);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      margin: 20px 0 12px;
+      font-weight: 700;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .course-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 12px;
+      min-height: 140px;
+      box-shadow: 0 8px 16px rgba(25, 46, 82, 0.08);
+      border: 1px solid #eef1f6;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .course-card .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #f4e8d8;
+      color: #7a4a14;
+    }
+
+    .course-card .title {
+      margin: 6px 0 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .course-card .desc {
+      font-size: 12px;
+      color: #5d6b7c;
+      line-height: 1.4;
+    }
+
+    .course-image {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      width: 52px;
+      height: 72px;
+      background: linear-gradient(160deg, #f2d9c8, #fff);
+      border-radius: 10px;
+      border: 1px solid #f2d0b8;
+    }
+
+    .course-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding: 0 4px;
+    }
+
+    .course-name {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .course-price {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      padding: 0 4px;
+    }
+
+    .price {
+      font-size: 20px;
+      color: #e53935;
+      font-weight: 700;
+    }
+
+    .grab {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ff6a00;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .nav {
+      position: sticky;
+      bottom: 0;
+      background: #fff;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    .nav span {
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .nav span.active {
+      color: #ff8a00;
+      font-weight: 600;
+    }
+
+    .plan-page {
+      background: linear-gradient(180deg, #ffffff 0%, #f6f7fb 40%, #f9f5ef 100%);
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      overflow: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .assistant-hero {
+      margin: 12px 18px 0;
+      background: linear-gradient(135deg, #cfe6ff 0%, #e7f3ff 55%, #f7fbff 100%);
+      border: 1px solid #d8e8fb;
+      border-radius: 20px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      min-height: 120px;
+    }
+
+    .assistant-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.6), transparent 50%);
+    }
+
+    .assistant-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 60%;
+    }
+
+    .assistant-hero-content h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: #1b365d;
+    }
+
+    .assistant-hero-content p {
+      margin: 0;
+      font-size: 12px;
+      color: #4b6b8f;
+    }
+
+    .assistant-hero-figure {
+      position: absolute;
+      right: 12px;
+      bottom: -10px;
+      width: 140px;
+      height: 140px;
+      z-index: 1;
+      filter: drop-shadow(0 6px 16px rgba(27, 63, 120, 0.2));
+    }
+
+    .back-btn {
+      border: none;
+      background: #f2f4f8;
+      color: #333;
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .chat-header {
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-header h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .chat-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 520px;
+      background: transparent;
+    }
+
+    .bubble {
+      max-width: 85%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      box-shadow: 0 6px 12px rgba(19, 36, 64, 0.08);
+    }
+
+    .bubble.bot {
+      align-self: flex-start;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .bubble.user {
+      align-self: flex-end;
+      background: #1b7cff;
+      color: #fff;
+    }
+
+    .bubble.highlight {
+      align-self: flex-start;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      max-width: 100%;
+      width: 100%;
+      margin: 18px 0 26px;
+    }
+
+    .ai-speech {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 10px;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .ai-speech-avatar {
+      width: 108px;
+      height: 136px;
+      overflow: visible;
+      background: transparent;
+    }
+
+    .ai-speech-avatar img {
+      width: 108px;
+      height: 136px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .ai-speech-bubble {
+      background: #fff7ec;
+      border: 1px solid #ffd9b3;
+      border-radius: 36px;
+      padding: 18px 20px;
+      font-size: 13px;
+      color: #7a4a14;
+      position: relative;
+      font-weight: 600;
+      box-shadow: 0 10px 20px rgba(255, 153, 51, 0.16);
+      line-height: 1.6;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .ai-speech-bubble::after {
+      content: "";
+      position: absolute;
+      left: -6px;
+      bottom: 16px;
+      width: 14px;
+      height: 14px;
+      background: #fff7ec;
+      border-left: 1px solid #ffd9b3;
+      border-bottom: 1px solid #ffd9b3;
+      transform: rotate(45deg);
+    }
+
+    .ai-speech-bubble b {
+      color: #ff7a00;
+      font-weight: 700;
+    }
+
+    .choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .choice-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .choice-btn.selected {
+      border-color: var(--accent);
+      background: var(--soft-blue);
+      color: var(--accent);
+    }
+
+    .picker {
+      margin-top: 6px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+    }
+
+    .picker-item {
+      scroll-snap-align: start;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      margin-bottom: 6px;
+      background: #f8fafc;
+      border: 1px solid transparent;
+    }
+
+    .picker-item:hover {
+      border-color: var(--accent);
+      background: var(--soft-blue);
+      color: var(--accent);
+    }
+
+    .picker-item.selected {
+      border-color: var(--accent);
+      background: var(--soft-blue);
+      color: var(--accent);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    .input-row input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+    }
+
+    .input-row.score-input input {
+      width: 78px;
+      flex: 0 0 78px;
+    }
+
+    .input-row.score-input {
+      justify-content: flex-start;
+    }
+
+    .input-row button {
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .topic-panel {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 10px;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    .topic-search {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .topic-group {
+      margin-bottom: 8px;
+    }
+
+    .topic-group summary {
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 6px;
+    }
+
+    .topic-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 4px 0;
+    }
+
+    .topic-item input { accent-color: #1b7cff; }
+
+    .topic-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    .topic-actions button {
+      border: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .weekly-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .day-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+    }
+
+    .day-card label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .day-card select {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 6px 8px;
+      font-size: 12px;
+      color: #666;
+      background: #fafafa;
+    }
+
+    .plan-card {
+      margin-top: 12px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .plan-hero {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .plan-avatar {
+      width: 58px;
+      height: 72px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffe8d6, #fff);
+      border: 1px solid #f2d5bf;
+      overflow: hidden;
+    }
+
+    .plan-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .plan-title {
+      font-size: 16px;
+      margin: 0 0 6px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      background: #f8f1e9;
+      border-radius: 10px;
+      padding: 8px 6px;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    .difficulty-wrap {
+      margin-top: 12px;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #eef1f6;
+      padding: 10px 12px;
+    }
+
+    .difficulty-title {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .difficulty-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .difficulty-seg {
+      height: 10px;
+      border-radius: 999px;
+      background: #edf0f5;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .difficulty-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .difficulty-labels {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 10px;
+      color: #8a95a3;
+      text-align: center;
+    }
+
+    .plan-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .plan-actions button {
+      flex: 1;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-secondary { background: #f2f4f8; color: var(--ink); }
+
+    .calendar-wrap {
+      margin-top: 12px;
+      border-radius: 16px;
+      background: #fff7ec;
+      padding: 10px;
+      border: 1px solid #f0e1d0;
+    }
+
+    .calendar-title {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    .weekday-row {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 11px;
+      color: #7a6f64;
+      text-align: center;
+    }
+
+    .calendar-day {
+      background: #fff;
+      border-radius: 10px;
+      padding: 6px;
+      min-height: 64px;
+      border: 1px solid var(--line);
+      font-size: 10px;
+    }
+
+    .calendar-day .date {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .calendar-day .item {
+      background: #fff4e7;
+      border-radius: 6px;
+      padding: 2px 4px;
+      margin-bottom: 2px;
+      color: #8a4a00;
+      font-size: 9px;
+    }
+
+    .calendar-count {
+      margin-top: 6px;
+      background: #fef3e5;
+      border-radius: 8px;
+      padding: 4px 6px;
+      font-size: 10px;
+      color: #8a4a00;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .calendar-rest {
+      margin-top: 6px;
+      background: #eef2f7;
+      border-radius: 8px;
+      padding: 4px 6px;
+      font-size: 10px;
+      color: #8b96a3;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .loading span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.2s infinite;
+    }
+    .loading span:nth-child(2) { animation-delay: 0.2s; }
+    .loading span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-4px); }
+    }
+
+    .login-mask {
+      position: absolute;
+      inset: 0;
+      background: rgba(12, 18, 30, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .login-mask.active { display: flex; }
+
+    .login-card {
+      width: 80%;
+      background: #fff;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .login-card button {
+      margin-top: 12px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .login-card .secondary {
+      background: #f2f4f8;
+      color: #333;
+    }
+
+    .login-form {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .login-form label {
+      font-size: 12px;
+      color: #6a7686;
+    }
+
+    .login-form input, .login-form select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+    }
+
+    .login-hint {
+      font-size: 12px;
+      color: #ff7a00;
+      margin-bottom: 6px;
+    }
+
+
+    .hidden { display: none; }
+
+    .back-step-row {
+      position: sticky;
+      bottom: 0;
+      padding: 8px 18px 12px;
+      display: flex;
+      justify-content: flex-start;
+      background: transparent;
+    }
+
+    .back-step-btn {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      background: #e8edf3;
+      color: #9aa6b2;
+    }
+
+    .back-step-btn.enabled {
+      background: #ffb649;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="canvas">
+      <div class="home-page" id="home-screen">
+        <div class="status-bar">
+          <div>15:11</div>
+          <div class="status-pill"></div>
+          <div>17%</div>
+        </div>
+        <div class="phone-header">
+          <div class="brand">领航伴学</div>
+          <div class="grade-chip">初三 ▾</div>
+        </div>
+        <div class="home-content">
+          <div class="banner">
+            <img src="首页banner.png" alt="首页banner" />
+          </div>
+
+          <div id="entry-first" class="entry-card">
+            <div class="entry-title">学习战略地图·立即规划</div>
+            <div class="entry-meta">快速完成计划问答，预计用时 3 分钟</div>
+            <div class="entry-action">
+              <button class="entry-btn" data-entry="first">去制定</button>
+            </div>
+          </div>
+
+          <div id="entry-next" class="entry-card">
+            <div class="entry-label">学习计划入口</div>
+            <div class="entry-title">学季即将结束 · 更新下一学季计划</div>
+            <div class="entry-meta">建议提前 7 天完成新学季节奏规划</div>
+            <div class="entry-action">
+              <span class="entry-status">待更新学季</span>
+              <button class="entry-btn" data-entry="next">去更新</button>
+            </div>
+          </div>
+
+          <div id="entry-ongoing" class="entry-card">
+            <div class="entry-label">学习计划入口</div>
+            <div class="entry-title">计划进行中 · 可进入调整</div>
+            <div class="entry-meta">查看计划进度或调整学习频次</div>
+            <div class="entry-action">
+              <span class="entry-status">进行中</span>
+              <button class="entry-btn" data-entry="ongoing">去查看</button>
+            </div>
+          </div>
+
+          <div class="section-title">热门推荐</div>
+          <div class="course-grid">
+            <div>
+              <div class="course-card" style="background:#f7eee6;">
+                <span class="badge">领航培优灵活学</span>
+                <div class="title" style="color:#7a3f20;">初中语文(全)</div>
+                <div class="desc" style="color:#7a3f20;">视频教辅+伴学服务<br/>校内+拔高全覆盖</div>
+                <div class="course-image"></div>
+              </div>
+              <div class="course-meta">
+                <div class="course-name">领航培优灵活学-初中语文(全)</div>
+              </div>
+              <div class="course-price">
+                <div class="price">799币</div>
+                <div class="grab">抢</div>
+              </div>
+            </div>
+            <div>
+              <div class="course-card" style="background:#e7f1ff;">
+                <span class="badge">领航培优灵活学</span>
+                <div class="title" style="color:#1b5fae;">初中数学(全)</div>
+                <div class="desc" style="color:#1b5fae;">视频教辅+伴学服务<br/>校内+拔高全覆盖</div>
+                <div class="course-image" style="background:linear-gradient(160deg,#cfe7ff,#fff);"></div>
+              </div>
+              <div class="course-meta">
+                <div class="course-name">领航培优灵活学-初中数学(全) · 于淼&陈康</div>
+              </div>
+              <div class="course-price">
+                <div class="price">1499币</div>
+                <div class="grab">抢</div>
+              </div>
+            </div>
+            <div>
+              <div class="course-card" style="background:#e7f1ff;">
+                <span class="badge">领航培优灵活学</span>
+                <div class="title" style="color:#1b5fae;">初中数学(上)</div>
+                <div class="desc" style="color:#1b5fae;">视频教辅+伴学服务<br/>校内+拔高全覆盖</div>
+                <div class="course-image" style="background:linear-gradient(160deg,#cfe7ff,#fff);"></div>
+              </div>
+              <div class="course-meta">
+                <div class="course-name">领航培优灵活学-初中数学(上) · 于淼&陈康</div>
+              </div>
+              <div class="course-price">
+                <div class="price">799币</div>
+                <div class="grab">抢</div>
+              </div>
+            </div>
+            <div>
+              <div class="course-card" style="background:#e7f1ff;">
+                <span class="badge">领航培优灵活学</span>
+                <div class="title" style="color:#1b5fae;">初中数学(下)</div>
+                <div class="desc" style="color:#1b5fae;">视频教辅+伴学服务<br/>校内+拔高全覆盖</div>
+                <div class="course-image" style="background:linear-gradient(160deg,#cfe7ff,#fff);"></div>
+              </div>
+              <div class="course-meta">
+                <div class="course-name">领航培优灵活学-初中数学(下) · 于淼&陈康</div>
+              </div>
+              <div class="course-price">
+                <div class="price">799币</div>
+                <div class="grab">抢</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <span class="active" id="nav-home">首页</span>
+          <span id="nav-study">学习</span>
+          <span id="nav-mine">我的</span>
+        </div>
+        <div class="login-mask" id="login-mask">
+          <div class="login-card" id="login-card"></div>
+        </div>
+      </div>
+
+      <div class="plan-page hidden" id="plan-screen">
+        <div class="chat-header">
+          <button class="back-btn" id="back-home">返回</button>
+          <h2>学习战略制定</h2>
+          <span></span>
+        </div>
+        <div class="assistant-hero">
+          <div class="assistant-hero-content">
+            <h3>你的 AI 助教 · 小航</h3>
+            <p>我会陪你把学习计划拆到每一天，轻松执行。</p>
+          </div>
+          <div class="assistant-hero-figure" aria-hidden="true">
+            <img src="助教角色.png" alt="AI助教" style="width:140px;height:140px;object-fit:contain;" />
+          </div>
+        </div>
+        <div class="chat-body" id="chat-body"></div>
+        <div class="back-step-row" id="back-step-row">
+          <button id="back-step" class="back-step-btn" disabled>返回上一问题</button>
+        </div>
+      </div>
+
+      <div class="study-page hidden" id="study-screen">
+        <div class="study-status">
+          <div>17:25</div>
+          <div>90</div>
+        </div>
+        <div class="study-header">
+          <div class="study-title">我的课程</div>
+          <button class="study-calendar-btn" id="study-date-hotspot">
+            <span class="study-calendar-icon">日</span>
+            学习日历
+          </button>
+        </div>
+        <div class="study-subject">语文</div>
+        <div class="study-hero">
+          <div class="study-cover">
+            <div class="study-cover-card">
+              名师领航<br/>高二语文(全)
+            </div>
+          </div>
+        </div>
+        <div class="study-course-bar">
+          <div class="study-course-row">
+            <div class="study-course-title">名师-高二语文（25H2+26H1全年）…</div>
+            <div class="study-course-actions">
+              <div class="icon-btn">↓</div>
+              <div class="icon-btn">≡</div>
+            </div>
+          </div>
+          <div class="study-course-meta">
+            <span>12模块</span>
+            <span>41专题</span>
+            <span>61考点</span>
+            <span>160视频</span>
+          </div>
+          <div class="study-course-footer">
+            <span class="study-teacher">刘雯韬</span>
+            <button class="knowledge-btn">知识图谱</button>
+          </div>
+        </div>
+        <div class="study-tabs">
+          <div class="study-tab active">1 高二信息性阅读（上）</div>
+          <div class="study-tab">2 高二文学类阅读（上）</div>
+          <div class="study-tab">3 …</div>
+        </div>
+        <div class="study-content">
+          <div class="study-side">
+            <div class="study-side-item active">专题一<br/>1 总览导学</div>
+            <div class="study-side-item">专题二<br/>2 题型方法</div>
+            <div class="study-side-item">专题三<br/>3 真题演练</div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:#333;">1 信息性阅读概要</div>
+            <div class="study-card">
+              <div>
+                <h4>1 信息性阅读题型总览与答题策略</h4>
+                <div style="font-size:11px;color:#f5a623;">★★</div>
+                <div class="time">00:00/33:02</div>
+              </div>
+              <div class="play">▶</div>
+            </div>
+          </div>
+        </div>
+        <div class="study-nav">
+          <span id="nav-home-study">首页</span>
+          <span id="nav-study-study" class="active">学习</span>
+          <span id="nav-mine-study">我的</span>
+        </div>
+      </div>
+
+      <div class="calendar-page hidden" id="calendar-screen">
+        <div class="calendar-header">
+          <button id="calendar-back">←</button>
+          <div class="calendar-title-main">学习日历</div>
+        </div>
+        <div class="calendar-card">
+          <div class="row">
+            <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+          </div>
+          <div class="row date-row">
+            <div>28</div><div>29</div><div>30</div><div>31</div>
+            <div class="active">1</div><div>2</div><div>3</div>
+          </div>
+        </div>
+        <div class="calendar-date-title">01.01</div>
+        <div class="calendar-item">
+          <div class="tag">语文</div>
+          <div class="info">信息性阅读题型总览与答题策略</div>
+          <div class="time">00:00 / 42:10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script id="course-data" type="application/json">
+{
+  "courses": [
+    {
+      "courseId": "数学_高一",
+      "subject": "数学",
+      "grade": "高一",
+      "topics": {
+        "1.1 集合与常用逻辑用语": [
+          "1.1.1.1",
+          "1.1.2.1",
+          "1.1.2.2",
+          "1.1.2.3",
+          "1.1.3.1",
+          "1.1.3.2",
+          "1.1.4.1",
+          "1.1.5.1",
+          "1.1.6.1"
+        ],
+        "1.2 一元二次函数、方程和不等式": [
+          "1.2.1.1",
+          "1.2.1.2",
+          "1.2.1.3",
+          "1.2.1.4",
+          "1.2.2.1",
+          "1.2.2.2",
+          "1.2.2.3",
+          "1.2.2.4"
+        ],
+        "1.3 函数的概念与性质": [
+          "1.3.1.1",
+          "1.3.1.2",
+          "1.3.1.3",
+          "1.3.1.4",
+          "1.3.2.1",
+          "1.3.2.2",
+          "1.3.2.3",
+          "1.3.2.4",
+          "1.3.2.5",
+          "1.3.2.6",
+          "1.3.2.7",
+          "1.3.2.8",
+          "1.3.2.9",
+          "1.3.2.10",
+          "1.3.2.11",
+          "1.3.2.12",
+          "1.3.2.13",
+          "1.3.2.14",
+          "1.3.2.15",
+          "1.3.2.16",
+          "1.3.2.17",
+          "1.3.2.18",
+          "1.3.3.1"
+        ],
+        "1.4 指数函数与对数函数": [
+          "1.4.1.1",
+          "1.4.2.1",
+          "1.4.2.2",
+          "1.4.3.1",
+          "1.4.3.2",
+          "1.4.3.3",
+          "1.4.4.1",
+          "1.4.4.2",
+          "1.4.4.3",
+          "1.4.4.4",
+          "1.4.5.1",
+          "1.4.5.2",
+          "1.4.5.3",
+          "1.4.5.4",
+          "1.4.5.5",
+          "1.4.5.6"
+        ],
+        "1.5 三角函数": [
+          "1.5.1.1",
+          "1.5.2.1",
+          "1.5.2.2",
+          "1.5.3.1",
+          "1.5.4.1",
+          "1.5.4.2",
+          "1.5.4.3",
+          "1.5.4.4",
+          "1.5.4.5",
+          "1.5.5.1",
+          "1.5.5.2",
+          "1.5.5.3",
+          "1.5.5.4",
+          "1.5.5.5",
+          "1.5.5.6",
+          "1.5.5.7"
+        ],
+        "2.1 平面向量": [
+          "2.1.1.1",
+          "2.1.2.1",
+          "2.1.2.2",
+          "2.1.2.3",
+          "2.1.2.4",
+          "2.1.2.5",
+          "2.1.2.6",
+          "2.1.2.7",
+          "2.1.2.8",
+          "2.1.2.9",
+          "2.1.3.1",
+          "2.1.3.2",
+          "2.1.3.3",
+          "2.1.4.1",
+          "2.1.4.2",
+          "2.1.4.3",
+          "2.1.4.4",
+          "2.1.4.5",
+          "2.1.4.6",
+          "2.1.4.7",
+          "2.1.4.8",
+          "2.1.4.9",
+          "2.1.4.10",
+          "2.1.4.11",
+          "2.1.4.12",
+          "2.1.4.13",
+          "2.1.4.14"
+        ],
+        "2.2 复数": [
+          "2.2.1.1",
+          "2.2.1.2"
+        ],
+        "2.3 立体几何初步": [
+          "2.3.1.1",
+          "2.3.1.2",
+          "2.3.2.1",
+          "2.3.2.2",
+          "2.3.2.3",
+          "2.3.2.4",
+          "2.3.2.5",
+          "2.3.2.6",
+          "2.3.3.1",
+          "2.3.3.2",
+          "2.3.3.3",
+          "2.3.4.1",
+          "2.3.4.2",
+          "2.3.4.3",
+          "2.3.4.4",
+          "2.3.4.5",
+          "2.3.4.6",
+          "2.3.4.7",
+          "2.3.4.8",
+          "2.3.4.9",
+          "2.3.4.10",
+          "2.3.4.11",
+          "2.3.4.12",
+          "2.3.4.13",
+          "2.3.4.14",
+          "2.3.4.15",
+          "2.3.4.16",
+          "2.3.4.17",
+          "2.3.4.18",
+          "2.3.4.19",
+          "2.3.4.20",
+          "2.3.4.21",
+          "2.3.4.19",
+          "2.3.4.19",
+          "2.3.4.20",
+          "2.3.4.21"
+        ],
+        "2.4 统计": [
+          "2.4.1.1",
+          "2.4.2.1",
+          "2.4.2.2",
+          "2.4.2.3",
+          "2.4.2.4",
+          "2.4.1.1",
+          "2.4.2.1",
+          "2.4.2.2",
+          "2.4.2.3",
+          "2.4.2.4"
+        ],
+        "2.5 概率": [
+          "2.5.1.1",
+          "2.5.1.2",
+          "2.5.1.3",
+          "2.5.1.4",
+          "2.5.2.1",
+          "2.5.3.1",
+          "2.5.1.1",
+          "2.5.1.2",
+          "2.5.1.3",
+          "2.5.1.4",
+          "2.5.2.1",
+          "2.5.3.1",
+          "2.5.3.1"
+        ]
+      },
+      "videoCount": 160
+    },
+    {
+      "courseId": "数学_高三",
+      "subject": "数学",
+      "grade": "高三",
+      "topics": {
+        "1.0 数学通用基础模块总纲": [
+          "1.0.1.1"
+        ],
+        "1.1 解不等式": [
+          "1.1.1.1",
+          "1.1.2.1",
+          "1.1.2.2"
+        ],
+        "1.2 基本不等式（均值不等式）": [
+          "1.2.1.1",
+          "1.2.1.2",
+          "1.2.1.3"
+        ],
+        "1.2 均值不等式与多元最值": [
+          "1.2.2.1",
+          "1.2.2.2",
+          "1.2.2.3",
+          "1.2.3.1"
+        ],
+        "1.3 二次函数基础模型": [
+          "1.3.1.1",
+          "1.3.2.1"
+        ],
+        "1.4 数学必备常识与技巧": [
+          "1.4.1.1",
+          "1.4.1.2",
+          "1.4.2.1",
+          "1.4.2.2",
+          "1.4.2.3"
+        ],
+        "1.5 复数": [
+          "1.5.1.1"
+        ],
+        "1.6 通用基础分层化复习": [
+          "1.6.1.1",
+          "1.6.1.2",
+          "1.6.1.3"
+        ],
+        "2.0 函数模块总纲": [
+          "2.0.1.1"
+        ],
+        "2.1 函数的概念与表示": [
+          "2.1.1.1",
+          "2.1.1.2",
+          "2.1.1.3",
+          "2.1.1.4"
+        ],
+        "2.2 函数的性质": [
+          "2.2.1.1",
+          "2.2.1.2",
+          "2.2.2.1",
+          "2.2.2.2",
+          "2.2.2.3",
+          "2.2.3.1",
+          "2.2.4.1"
+        ],
+        "2.3 基本初等函数": [
+          "2.3.1.1",
+          "2.3.1.2",
+          "2.3.1.3"
+        ],
+        "2.4 函数的应用": [
+          "2.4.1.1",
+          "2.4.2.1",
+          "2.4.2.2"
+        ],
+        "3.0 导数及应用模块总纲": [
+          "3.0.1.1"
+        ],
+        "3.1 导数的概念与几何意义": [
+          "3.1.2.1"
+        ],
+        "3.1 导数的概念与意义": [
+          "3.1.1.1",
+          "3.1.1.2",
+          "3.1.3.1",
+          "3.1.3.2"
+        ],
+        "3.2 单调性问题": [
+          "3.2.1.1",
+          "3.2.1.2",
+          "3.2.1.3",
+          "3.2.2.1"
+        ],
+        "3.3 极值最值问题": [
+          "3.3.1.1",
+          "3.3.2.1",
+          "3.3.2.2"
+        ],
+        "3.4 恒成立与存在性问题": [
+          "3.4.1.1",
+          "3.4.1.2",
+          "3.4.1.3",
+          "3.4.1.4",
+          "3.4.1.5",
+          "3.4.1.6",
+          "3.4.1.7",
+          "3.4.1.8",
+          "3.4.1.9",
+          "3.4.2.1"
+        ],
+        "3.5 根与方程问题": [
+          "3.5.1.1",
+          "3.5.1.2",
+          "3.5.2.1",
+          "3.5.3.1",
+          "3.5.3.2",
+          "3.5.4.1",
+          "3.5.4.2"
+        ],
+        "3.6 赋值放缩": [
+          "3.6.1.1",
+          "3.6.1.2"
+        ],
+        "4.0 三角函数模块总纲": [
+          "4.0.1.1"
+        ],
+        "4.1 三角函数的恒等变换": [
+          "4.1.1.1",
+          "4.1.2.1",
+          "4.1.2.2",
+          "4.1.3.1"
+        ],
+        "4.2 三角函数的图像": [
+          "4.2.1.1",
+          "4.2.2.1",
+          "4.2.2.2",
+          "4.2.3.1"
+        ],
+        "4.3 解三角形": [
+          "4.3.1.1",
+          "4.3.2.1",
+          "4.3.2.2",
+          "4.3.3.1",
+          "4.3.4.1",
+          "4.3.4.2",
+          "4.3.4.3",
+          "4.3.4.4"
+        ],
+        "5.0 平面向量模块总纲": [
+          "5.0.1.1"
+        ],
+        "5.1 向量基本问题": [
+          "5.1.1.1",
+          "5.1.1.2",
+          "5.1.1.3",
+          "5.1.2.1",
+          "5.1.2.2"
+        ],
+        "5.2 向量性质": [
+          "5.2.1.1",
+          "5.2.1.2",
+          "5.2.1.3",
+          "5.2.2.1",
+          "5.2.2.2"
+        ],
+        "6.0 数列模块总纲": [
+          "6.0.1.1"
+        ],
+        "6.1 等差与等比数列": [
+          "6.1.1.1",
+          "6.1.2.1"
+        ],
+        "6.2 求通项公式": [
+          "6.2.1.1",
+          "6.2.2.1",
+          "6.2.2.2",
+          "6.2.2.3",
+          "6.2.2.4",
+          "6.2.3.1",
+          "6.2.3.2"
+        ],
+        "6.3 数列求和": [
+          "6.3.1.1",
+          "6.3.2.1"
+        ],
+        "6.4 数列创新": [
+          "6.4.1.1",
+          "6.4.1.2"
+        ],
+        "6.5 二轮数列分层化复习": [
+          "6.5.1.1",
+          "6.5.1.2"
+        ],
+        "7.0 立体几何模块总纲": [
+          "7.0.1.1"
+        ],
+        "7.1 空间几何体": [
+          "7.1.1.1",
+          "7.1.1.2",
+          "7.1.1.3",
+          "7.1.2.1",
+          "7.1.2.2",
+          "7.1.2.3",
+          "7.1.2.4"
+        ],
+        "7.2 空间中的位置关系": [
+          "7.2.1.1",
+          "7.2.2.1",
+          "7.2.2.2",
+          "7.2.2.3"
+        ],
+        "7.3 空间中的角度与距离": [
+          "7.3.1.1",
+          "7.3.1.2",
+          "7.3.2.1",
+          "7.3.2.2"
+        ],
+        "8.0 排列组合与概率统计模块总纲": [
+          "8.0.1.1"
+        ],
+        "8.1 排列组合": [
+          "8.1.1.1",
+          "8.1.2.1",
+          "8.1.2.2",
+          "8.1.2.3",
+          "8.1.3.1"
+        ],
+        "8.2 概率": [
+          "8.2.1.1",
+          "8.2.1.2",
+          "8.2.2.1",
+          "8.2.2.2",
+          "8.2.2.3",
+          "8.2.2.4",
+          "8.2.2.5",
+          "8.2.3.1",
+          "8.2.3.2",
+          "8.2.3.3"
+        ],
+        "8.3 统计": [
+          "8.3.1.1"
+        ],
+        "8.4 概率统计分层化复习": [
+          "8.4.1.1",
+          "8.4.1.2",
+          "8.4.1.3",
+          "8.4.1.4"
+        ],
+        "9.0 解析几何模块总纲": [
+          "9.0.1.1"
+        ],
+        "9.1 直线和圆": [
+          "9.1.1.1",
+          "9.1.1.2",
+          "9.1.2.1",
+          "9.1.3.1",
+          "9.1.3.2",
+          "9.1.3.3"
+        ],
+        "9.2 圆锥曲线选填与基本性质": [
+          "9.2.1.1",
+          "9.2.1.2",
+          "9.2.1.3",
+          "9.2.1.4",
+          "9.2.1.5",
+          "9.2.2.1",
+          "9.2.2.2",
+          "9.2.3.1",
+          "9.2.4.1",
+          "9.2.4.2"
+        ],
+        "9.3 圆锥曲线的交点问题": [
+          "9.3.1.1",
+          "9.3.1.2",
+          "9.3.1.3",
+          "9.3.1.4",
+          "9.3.1.5",
+          "9.3.1.6",
+          "9.3.1.7",
+          "9.3.2.1",
+          "9.3.2.2",
+          "9.3.2.3",
+          "9.3.2.4",
+          "9.3.2.5"
+        ],
+        "9.4 圆锥曲线的动点问题": [
+          "9.4.1.1",
+          "9.4.1.2",
+          "9.4.2.1",
+          "9.4.2.2",
+          "9.4.3.1",
+          "9.4.3.2",
+          "9.4.3.3"
+        ],
+        "9.5 圆锥曲线解答题特殊技巧": [
+          "9.5.1.1",
+          "9.5.2.1",
+          "9.5.2.2",
+          "9.5.2.3",
+          "9.5.3.1",
+          "9.5.4.1"
+        ],
+        "10.1 高考分层复习重点": [
+          "10.1.1.1",
+          "10.1.1.2",
+          "10.1.1.3",
+          "10.1.1.4",
+          "10.1.1.5"
+        ]
+      },
+      "videoCount": 200
+    },
+    {
+      "courseId": "数学_高二",
+      "subject": "数学",
+      "grade": "高二",
+      "topics": {
+        "3.1 空间向量与立体几何": [
+          "3.1.1.1",
+          "3.1.2.1",
+          "3.1.3.1",
+          "3.1.3.2",
+          "3.1.4.1",
+          "3.1.4.2",
+          "3.1.4.3",
+          "3.1.4.4",
+          "3.1.4.5",
+          "3.1.4.6",
+          "3.1.4.7"
+        ],
+        "3.2 直线与圆的方程": [
+          "3.2.1.1",
+          "3.2.2.1",
+          "3.2.2.2",
+          "3.2.3.1",
+          "3.2.3.2",
+          "3.2.3.3",
+          "3.2.3.4",
+          "3.2.4.1",
+          "3.2.5.1",
+          "3.2.5.2",
+          "3.2.5.3",
+          "3.2.5.4",
+          "3.2.5.5",
+          "3.2.5.6",
+          "3.2.5.7",
+          "3.2.5.8"
+        ],
+        "3.3 圆锥曲线的方程": [
+          "3.3.1.1",
+          "3.3.1.2",
+          "3.3.2.1",
+          "3.3.2.2",
+          "3.3.3.1",
+          "3.3.3.2"
+        ],
+        "3.4 圆锥曲线方程的综合提升": [
+          "3.4.1.1",
+          "3.4.1.2",
+          "3.4.2.1",
+          "3.4.2.2",
+          "3.4.3.1",
+          "3.4.3.2",
+          "3.4.4.1",
+          "3.4.4.2",
+          "3.4.4.3",
+          "3.4.5.1",
+          "3.4.5.2",
+          "3.4.6.1",
+          "3.4.6.2",
+          "3.4.7.1",
+          "3.4.7.2",
+          "3.4.8.1",
+          "3.4.8.2",
+          "3.4.8.3",
+          "3.4.8.4",
+          "3.4.8.5",
+          "3.4.9.1",
+          "3.4.10.1",
+          "3.4.11.1",
+          "3.4.12.1",
+          "3.4.12.2"
+        ],
+        "4.3 数列": [
+          "4.3.1.1",
+          "4.3.2.1",
+          "4.3.2.2",
+          "4.3.2.3",
+          "4.3.3.1",
+          "4.3.3.2",
+          "4.3.3.3"
+        ],
+        "4.4 数列的综合提升": [
+          "4.4.1.1",
+          "4.4.1.2",
+          "4.4.1.3",
+          "4.4.2.1",
+          "4.4.2.2",
+          "4.4.3.1",
+          "4.4.3.2",
+          "4.4.4.1",
+          "4.4.5.1",
+          "4.4.6.1",
+          "4.4.7.1",
+          "4.4.7.2"
+        ],
+        "4.5 一元函数的导数及其应用": [
+          "4.5.1.1",
+          "4.5.1.2",
+          "4.5.1.3",
+          "4.5.1.4",
+          "4.5.1.5",
+          "4.5.1.6",
+          "4.5.2.1",
+          "4.5.2.2",
+          "4.5.2.3",
+          "4.5.3.1",
+          "4.5.3.2",
+          "4.5.3.3",
+          "4.5.3.4",
+          "4.5.3.5",
+          "4.5.3.6",
+          "4.5.3.7",
+          "4.5.3.8",
+          "4.5.3.9",
+          "4.5.3.10"
+        ],
+        "4.6 一元函数的导数及其应用的综合提升": [
+          "4.6.1.1",
+          "4.6.1.2",
+          "4.6.1.3",
+          "4.6.1.4",
+          "4.6.1.5",
+          "4.6.2.1",
+          "4.6.2.2",
+          "4.6.2.3",
+          "4.6.3.1",
+          "4.6.3.2",
+          "4.6.4.1",
+          "4.6.4.2",
+          "4.6.5.1",
+          "4.6.5.2"
+        ],
+        "5.1 计数原理": [
+          "5.1.1.1",
+          "5.1.1.2",
+          "5.1.1.3",
+          "5.1.1.4",
+          "5.1.2.1",
+          "5.1.2.2",
+          "5.1.2.3",
+          "5.1.2.4",
+          "5.1.2.5",
+          "5.1.2.6",
+          "5.1.2.7",
+          "5.1.2.8",
+          "5.1.2.9",
+          "5.1.2.10",
+          "5.1.3.1",
+          "5.1.3.2",
+          "5.1.3.3"
+        ],
+        "5.2 随机变量及其分布": [
+          "5.2.1.1",
+          "5.2.1.2",
+          "5.2.1.3",
+          "5.2.1.4",
+          "5.2.1.5",
+          "5.2.2.1",
+          "5.2.3.1",
+          "5.2.3.2",
+          "5.2.3.3",
+          "5.2.3.4",
+          "5.2.4.1",
+          "5.2.4.2",
+          "5.2.4.3",
+          "5.2.4.4",
+          "5.2.5.1",
+          "5.2.5.2",
+          "5.2.3.2",
+          "5.2.3.3",
+          "5.2.3.4",
+          "5.2.4.1",
+          "5.2.4.2",
+          "5.2.4.3",
+          "5.2.4.4",
+          "5.2.5.1",
+          "5.2.5.2"
+        ],
+        "5.3 成对数据的统计分析": [
+          "5.3.1.1",
+          "5.3.2.1",
+          "5.3.2.2",
+          "5.3.3.1",
+          "5.3.1.1",
+          "5.3.2.1",
+          "5.3.2.2",
+          "5.3.3.1"
+        ]
+      },
+      "videoCount": 160
+    },
+    {
+      "courseId": "物理_高一",
+      "subject": "物理",
+      "grade": "高一",
+      "topics": {
+        "1.1 运动的描述": [
+          "1.1.1.1",
+          "1.1.2.1",
+          "1.1.3.1",
+          "1.1.4.1",
+          "1.1.4.2",
+          "1.1.5.1",
+          "1.1.5.2",
+          "1.1.5.3"
+        ],
+        "1.2 匀变速直线运动的研究": [
+          "1.2.1.1",
+          "1.2.2.1",
+          "1.2.3.1",
+          "1.2.4.1",
+          "1.2.4.2",
+          "1.2.4.3",
+          "1.2.4.4",
+          "1.2.5.1",
+          "1.2.5.2",
+          "1.2.5.3",
+          "1.2.6.1",
+          "1.2.6.2",
+          "1.2.7.1",
+          "1.2.7.2",
+          "1.2.7.3",
+          "1.2.8.1",
+          "1.2.8.2",
+          "1.2.8.3",
+          "1.2.8.4",
+          "1.2.9.1",
+          "1.2.9.2",
+          "1.2.9.3",
+          "1.2.9.4"
+        ],
+        "1.3 相互作用—力": [
+          "1.3.1.1",
+          "1.3.1.2",
+          "1.3.1.3",
+          "1.3.1.4",
+          "1.3.2.1",
+          "1.3.2.2",
+          "1.3.3.1",
+          "1.3.4.1",
+          "1.3.4.2",
+          "1.3.4.3",
+          "1.3.4.4",
+          "1.3.5.1",
+          "1.3.5.2",
+          "1.3.5.3",
+          "1.3.6.1",
+          "1.3.6.2",
+          "1.3.6.3",
+          "1.3.6.4",
+          "1.3.6.5",
+          "1.3.6.6",
+          "1.3.6.7"
+        ],
+        "1.4 运动和力的关系": [
+          "1.4.1.1",
+          "1.4.2.1",
+          "1.4.2.2",
+          "1.4.3.1",
+          "1.4.3.2",
+          "1.4.3.3",
+          "1.4.3.4",
+          "1.4.3.5",
+          "1.4.3.6",
+          "1.4.3.7",
+          "1.4.3.8",
+          "1.4.3.9",
+          "1.4.3.10",
+          "1.4.3.11",
+          "1.4.3.12",
+          "1.4.3.13",
+          "1.4.3.14",
+          "1.4.3.15",
+          "1.4.3.16",
+          "1.4.3.17",
+          "1.4.3.18",
+          "1.4.3.19",
+          "1.4.3.20",
+          "1.4.3.21",
+          "1.4.4.1",
+          "1.4.4.2",
+          "1.4.4.3",
+          "1.4.4.4"
+        ],
+        "2.1 抛体运动": [
+          "2.1.1.1",
+          "2.1.2.1",
+          "2.1.2.2",
+          "2.1.2.3",
+          "2.1.2.4",
+          "2.1.2.5",
+          "2.1.3.1",
+          "2.1.3.2",
+          "2.1.3.3",
+          "2.1.3.4",
+          "2.1.3.5",
+          "2.1.3.6",
+          "2.1.3.7",
+          "2.1.4.1"
+        ],
+        "2.2 圆周运动": [
+          "2.2.1.1",
+          "2.2.1.2",
+          "2.2.1.3",
+          "2.2.2.1",
+          "2.2.3.1",
+          "2.2.4.1",
+          "2.2.4.2",
+          "2.2.4.3",
+          "2.2.4.4",
+          "2.2.4.5",
+          "2.2.4.6",
+          "2.2.4.7",
+          "2.2.4.8",
+          "2.2.4.9",
+          "2.2.4.10"
+        ],
+        "2.3 万有引力与宇宙航行": [
+          "2.3.1.1",
+          "2.3.1.2",
+          "2.3.2.1",
+          "2.3.2.2",
+          "2.3.2.3",
+          "2.3.2.4",
+          "2.3.3.1",
+          "2.3.3.2",
+          "2.3.3.3",
+          "2.3.3.4",
+          "2.3.4.1",
+          "2.3.4.2",
+          "2.3.4.3",
+          "2.3.4.4",
+          "2.3.4.5",
+          "2.3.4.6",
+          "2.3.4.7",
+          "2.3.4.8",
+          "2.3.5.1"
+        ],
+        "2.4 机械能守恒定律": [
+          "2.4.1.1",
+          "2.4.1.2",
+          "2.4.1.3",
+          "2.4.1.4",
+          "2.4.1.5",
+          "2.4.1.6",
+          "2.4.1.7",
+          "2.4.2.1",
+          "2.4.2.2",
+          "2.4.3.1",
+          "2.4.3.2",
+          "2.4.3.3",
+          "2.4.3.4",
+          "2.4.3.5",
+          "2.4.3.6",
+          "2.4.3.7",
+          "2.4.3.8",
+          "2.4.3.9",
+          "2.4.4.1",
+          "2.4.4.2",
+          "2.4.4.3",
+          "2.4.4.4",
+          "2.4.4.5",
+          "2.4.4.6",
+          "2.4.4.7",
+          "2.4.5.1",
+          "2.4.5.2",
+          "2.4.5.3",
+          "2.4.5.4",
+          "2.4.5.5",
+          "2.4.5.6",
+          "2.4.5.7"
+        ]
+      },
+      "videoCount": 160
+    },
+    {
+      "courseId": "物理_高三",
+      "subject": "物理",
+      "grade": "高三",
+      "topics": {
+        "1.1 直线运动": [
+          "1.1.1.1",
+          "1.1.1.2",
+          "1.1.1.3",
+          "1.1.1.4",
+          "1.1.2.1",
+          "1.1.3.1"
+        ],
+        "1.2 相互作用": [
+          "1.2.1.1",
+          "1.2.1.2",
+          "1.2.2.1",
+          "1.2.2.2",
+          "1.2.2.3",
+          "1.2.2.4"
+        ],
+        "1.3 牛顿运动定律": [
+          "1.3.1.1",
+          "1.3.1.2",
+          "1.3.2.1",
+          "1.3.2.2",
+          "1.3.3.1",
+          "1.3.3.2",
+          "1.3.3.3",
+          "1.3.3.4"
+        ],
+        "1.4 曲线运动与平抛": [
+          "1.4.1.1",
+          "1.4.1.2",
+          "1.4.2.1",
+          "1.4.2.2",
+          "1.4.2.3",
+          "1.4.2.4"
+        ],
+        "1.5 圆周运动": [
+          "1.5.1.1",
+          "1.5.2.1",
+          "1.5.2.2",
+          "1.5.2.3",
+          "1.5.3.1"
+        ],
+        "1.6 万有引力": [
+          "1.6.1.1",
+          "1.6.1.2",
+          "1.6.1.3",
+          "1.6.2.1",
+          "1.6.2.2",
+          "1.6.3.1",
+          "1.6.3.2",
+          "1.6.3.3"
+        ],
+        "1.7 功与能": [
+          "1.7.1.1",
+          "1.7.2.1",
+          "1.7.2.2",
+          "1.7.3.1",
+          "1.7.3.2",
+          "1.7.3.3",
+          "1.7.4.1",
+          "1.7.4.2"
+        ],
+        "1.8 动量": [
+          "1.8.1.1",
+          "1.8.2.1",
+          "1.8.2.2",
+          "1.8.3.1",
+          "1.8.3.2",
+          "1.8.3.3"
+        ],
+        "2.1 静电场": [
+          "2.1.1.1",
+          "2.1.2.1",
+          "2.1.2.2",
+          "2.1.3.1",
+          "2.1.3.2",
+          "2.1.3.3",
+          "2.1.3.4",
+          "2.1.3.5",
+          "2.1.3.6",
+          "2.1.4.1",
+          "2.1.4.2",
+          "2.1.4.3",
+          "2.1.5.1",
+          "2.1.5.2"
+        ],
+        "2.2 直流电路": [
+          "2.2.2.1",
+          "2.2.2.2",
+          "2.2.2.3",
+          "2.2.2.4",
+          "2.2.2.5"
+        ],
+        "2.3 磁场": [
+          "2.3.1.1",
+          "2.3.1.2",
+          "2.3.1.3",
+          "2.3.2.1",
+          "2.3.2.2",
+          "2.3.2.3",
+          "2.3.2.4",
+          "2.3.2.5",
+          "2.3.3.1",
+          "2.3.3.2",
+          "2.3.3.3"
+        ],
+        "2.4 电磁感应": [
+          "2.4.1.1",
+          "2.4.1.2",
+          "2.4.1.3",
+          "2.4.1.4",
+          "2.4.1.5",
+          "2.4.2.1",
+          "2.4.2.2",
+          "2.4.2.3",
+          "2.4.2.4",
+          "2.4.2.5",
+          "2.4.2.6"
+        ],
+        "2.5 交变电流": [
+          "2.5.1.1",
+          "2.5.1.2",
+          "2.5.1.3",
+          "2.5.2.1",
+          "2.5.2.2",
+          "2.5.2.3"
+        ],
+        "3.1 分子动理论": [
+          "3.1.1.1",
+          "3.1.1.2"
+        ],
+        "3.2 气体固体与液体": [
+          "3.2.1.1",
+          "3.2.1.2",
+          "3.2.1.3",
+          "3.2.1.4",
+          "3.2.1.5"
+        ],
+        "3.3 热力学定律": [
+          "3.3.1.1"
+        ],
+        "4.1 光与电磁波": [
+          "4.1.1.1",
+          "4.1.1.2",
+          "4.1.2.1"
+        ],
+        "4.2 机械振动与机械波": [
+          "4.2.1.1",
+          "4.2.1.2",
+          "4.2.1.3",
+          "4.2.1.4",
+          "4.2.2.1",
+          "4.2.2.2",
+          "4.2.2.3",
+          "4.2.2.4",
+          "4.2.2.5"
+        ],
+        "5.1 力学计算选择难点": [
+          "5.1.1.1",
+          "5.1.1.2",
+          "5.1.1.3",
+          "5.1.1.4",
+          "5.1.1.5",
+          "5.1.1.6",
+          "5.1.2.1",
+          "5.1.2.2",
+          "5.1.3.1",
+          "5.1.3.2",
+          "5.1.3.3",
+          "5.1.4.1",
+          "5.1.4.2",
+          "5.1.4.3",
+          "5.1.4.4",
+          "5.1.5.1",
+          "5.1.5.2",
+          "5.1.5.3",
+          "5.1.5.4",
+          "5.1.5.5",
+          "5.1.5.6",
+          "5.1.6.1",
+          "5.1.6.2",
+          "5.1.6.3",
+          "5.1.6.4"
+        ],
+        "5.2 电磁计算选择难点": [
+          "5.2.1.1",
+          "5.2.1.2",
+          "5.2.1.3",
+          "5.2.1.4",
+          "5.2.1.5",
+          "5.2.1.6",
+          "5.2.1.7",
+          "5.2.1.8",
+          "5.2.1.9",
+          "5.2.1.10",
+          "5.2.1.11",
+          "5.2.1.12",
+          "5.2.1.13",
+          "5.2.2.1",
+          "5.2.2.2",
+          "5.2.2.3",
+          "5.2.2.4",
+          "5.2.2.5",
+          "5.2.3.1",
+          "5.2.3.2"
+        ],
+        "6.1 力学实验": [
+          "6.1.1.1",
+          "6.1.1.2",
+          "6.1.1.3",
+          "6.1.1.4",
+          "6.1.1.5",
+          "6.1.1.6",
+          "6.1.1.7",
+          "6.1.1.8",
+          "6.1.1.9",
+          "6.1.1.10"
+        ],
+        "6.2 电学实验": [
+          "6.2.1.1",
+          "6.2.1.2",
+          "6.2.1.3",
+          "6.2.1.4",
+          "6.2.2.1",
+          "6.2.2.2",
+          "6.2.2.3",
+          "6.2.2.4",
+          "6.2.2.5",
+          "6.2.3.1",
+          "6.2.3.2",
+          "6.2.3.3",
+          "6.2.4.1",
+          "6.2.4.2"
+        ],
+        "6.3 其他实验": [
+          "6.3.1.1",
+          "6.3.1.2",
+          "6.3.1.3",
+          "6.3.1.4"
+        ],
+        "7.1 物理思想方法": [
+          "7.1.1.1",
+          "7.1.1.2",
+          "7.1.1.3",
+          "7.1.1.4",
+          "7.1.1.5",
+          "7.1.1.6",
+          "7.1.1.7"
+        ]
+      },
+      "videoCount": 200
+    },
+    {
+      "courseId": "物理_高二",
+      "subject": "物理",
+      "grade": "高二",
+      "topics": {
+        "1.1 静电场及其应用": [
+          "1.1.1.1",
+          "1.1.1.2",
+          "1.1.2.1",
+          "1.1.2.2",
+          "1.1.2.3",
+          "1.1.3.1",
+          "1.1.3.2",
+          "1.1.3.3",
+          "1.1.3.4",
+          "1.1.3.5",
+          "1.1.4.1"
+        ],
+        "1.2 静电场中的能量": [
+          "1.2.1.1",
+          "1.2.1.2",
+          "1.2.2.1",
+          "1.2.3.1",
+          "1.2.3.2",
+          "1.2.3.3",
+          "1.2.3.4",
+          "1.2.3.5",
+          "1.2.4.1",
+          "1.2.4.2",
+          "1.2.5.1",
+          "1.2.5.2",
+          "1.2.5.3",
+          "1.2.5.4",
+          "1.2.6.1",
+          "1.2.6.2"
+        ],
+        "1.3 电路及其应用": [
+          "1.3.1.1",
+          "1.3.2.1",
+          "1.3.3.1",
+          "1.3.3.2",
+          "1.3.4.1",
+          "1.3.4.2",
+          "1.3.5.1"
+        ],
+        "1.4 电能 能量守恒定律": [
+          "1.4.1.1",
+          "1.4.2.1",
+          "1.4.2.2",
+          "1.4.2.3",
+          "1.4.2.4",
+          "1.4.2.5",
+          "1.4.3.1",
+          "1.4.4.1",
+          "1.4.5.1"
+        ],
+        "1.5 电磁感应与电磁波初步": [
+          "1.5.1.1",
+          "1.5.2.1",
+          "1.5.2.2"
+        ],
+        "2.1 动量守恒定律": [
+          "2.1.1.1",
+          "2.1.2.1",
+          "2.1.2.2",
+          "2.1.3.1",
+          "2.1.3.2",
+          "2.1.4.1",
+          "2.1.4.2",
+          "2.1.4.3",
+          "2.1.4.4",
+          "2.1.5.1",
+          "2.1.6.1"
+        ],
+        "2.2 机械振动": [
+          "2.2.1.1",
+          "2.2.2.1",
+          "2.2.2.2",
+          "2.2.3.1",
+          "2.2.4.1",
+          "2.2.5.1",
+          "2.2.6.1"
+        ],
+        "2.3 机械波": [
+          "2.3.1.1",
+          "2.3.2.1",
+          "2.3.2.2",
+          "2.3.2.3",
+          "2.3.3.1",
+          "2.3.4.1",
+          "2.3.4.2"
+        ],
+        "2.4 光": [
+          "2.4.1.1",
+          "2.4.1.2",
+          "2.4.2.1",
+          "2.4.2.2",
+          "2.4.2.3",
+          "2.4.3.1",
+          "2.4.3.2",
+          "2.4.4.1",
+          "2.4.5.1",
+          "2.4.6.1"
+        ],
+        "3.1 安培力与洛伦兹力": [
+          "3.1.1.1",
+          "3.1.1.2",
+          "3.1.1.3",
+          "3.1.1.4",
+          "3.1.3.1",
+          "3.1.3.2",
+          "3.1.3.3",
+          "3.1.3.4",
+          "3.1.3.5",
+          "3.1.4.1",
+          "3.1.4.2",
+          "3.1.4.3",
+          "3.1.5.1",
+          "3.1.5.2",
+          "3.1.5.3",
+          "3.1.6.1",
+          "3.1.6.2",
+          "3.1.7.1",
+          "3.1.7.2",
+          "3.1.7.3",
+          "3.1.7.4",
+          "3.1.8.1",
+          "3.1.8.2"
+        ],
+        "3.2 电磁感应": [
+          "3.2.1.1",
+          "3.2.1.2",
+          "3.2.2.1",
+          "3.2.2.2",
+          "3.2.2.3",
+          "3.2.3.1",
+          "3.2.3.2",
+          "3.2.3.3",
+          "3.2.3.4",
+          "3.2.3.5",
+          "3.2.4.1",
+          "3.2.4.2",
+          "3.2.5.1",
+          "3.2.6.1",
+          "3.2.6.2",
+          "3.2.7.1",
+          "3.2.7.2"
+        ],
+        "3.3 交变电流": [
+          "3.3.1.1",
+          "3.3.2.1",
+          "3.3.2.2",
+          "3.3.3.1",
+          "3.3.3.2",
+          "3.3.4.1"
+        ],
+        "3.4 电磁振荡与电磁波": [
+          "3.4.1.1"
+        ],
+        "3.5 传感器": [
+          "3.5.1.1",
+          "3.5.1.2"
+        ],
+        "4.1 分子动理论": [
+          "4.1.1.1",
+          "4.1.2.1",
+          "4.1.3.1",
+          "4.1.4.1"
+        ],
+        "4.2 气体、固体和液体": [
+          "4.2.1.1",
+          "4.2.2.1",
+          "4.2.2.2",
+          "4.2.2.3",
+          "4.2.2.4",
+          "4.2.2.5",
+          "4.2.2.6",
+          "4.2.2.7",
+          "4.2.2.8",
+          "4.2.3.1",
+          "4.2.4.1"
+        ],
+        "4.3 热力学定律": [
+          "4.3.1.1",
+          "4.3.1.2",
+          "4.3.2.1"
+        ],
+        "4.4 原子结构和波粒二象性": [
+          "4.4.1.1",
+          "4.4.2.1",
+          "4.4.2.2",
+          "4.4.2.3",
+          "4.4.3.1",
+          "4.4.4.1",
+          "4.4.4.2",
+          "4.4.5.1"
+        ],
+        "4.5 原子核": [
+          "4.5.1.1",
+          "4.5.2.1",
+          "4.5.3.1",
+          "4.5.4.1"
+        ]
+      },
+      "videoCount": 160
+    },
+    {
+      "courseId": "语文_高一",
+      "subject": "语文",
+      "grade": "高一",
+      "topics": {
+        "1 核心知识": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "1",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "1",
+          "2",
+          "3",
+          "3"
+        ],
+        "2 真题演练": [
+          "1",
+          "2",
+          "1",
+          "2"
+        ],
+        "1 高一信息性阅读题型方法技巧": [
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "2 题型方法": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "1",
+          "2",
+          "3",
+          "1",
+          "1",
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "3 真题演练": [
+          "1",
+          "2",
+          "1",
+          "2",
+          "1",
+          "2",
+          "1",
+          "2"
+        ],
+        "1 高一小说阅读题型方法技巧": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "1 高一散文阅读核心必备知识": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "1"
+        ],
+        "2 高一散文阅读题型方法技巧": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2"
+        ],
+        "1 高一文言文阅读课内重点篇目精讲": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "2 高一文言文阅读核心必备知识": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "3 高一文言文阅读题型方法技巧": [
+          "1",
+          "2",
+          "1",
+          "2",
+          "3"
+        ],
+        "1 高一古诗阅读核心必备知识": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "2 高一古诗阅读题型方法技巧": [
+          "1",
+          "2"
+        ],
+        "1 题型方法": [
+          "1"
+        ],
+        "1 高一名著阅读核心必备知识": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "1 高一语用核心必备知识": [
+          "1",
+          "2"
+        ],
+        "2 高一语用题型方法技巧": [
+          "1",
+          "2",
+          "1",
+          "2"
+        ],
+        "1 高一议论文写作题型方法技巧": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8"
+        ]
+      },
+      "videoCount": 160
+    },
+    {
+      "courseId": "语文_高三",
+      "subject": "语文",
+      "grade": "高三",
+      "topics": {
+        "1 论述类⽂本阅读核⼼必备知识": [
+          "1"
+        ],
+        "2 论述类⽂本阅读题型⽅法技巧": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "2 论述类文本阅读题型方法技巧": [
+          "1",
+          "2"
+        ],
+        "1 实⽤类⽂本阅读核⼼必备知识": [
+          "1",
+          "2",
+          "3"
+        ],
+        "2 实⽤类⽂本阅读题型⽅法技巧": [
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3"
+        ],
+        "1 ⼩说阅读核⼼必备知识": [
+          "1",
+          "2"
+        ],
+        "2 ⼩说阅读题型⽅法技巧": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "1",
+          "2"
+        ],
+        "1 信息性阅读核⼼必备知识": [
+          "1"
+        ],
+        "2 信息性阅读题型⽅法技巧": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "1 散⽂阅读核⼼必备知识": [
+          "1",
+          "1",
+          "2",
+          "3"
+        ],
+        "2 散⽂阅读题型⽅法技巧": [
+          "1",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "1",
+          "2"
+        ],
+        "1 现代诗阅读核⼼必备知识": [
+          "1",
+          "2",
+          "3"
+        ],
+        "2 现代诗阅读题型⽅法技巧": [
+          "1",
+          "1",
+          "1",
+          "2",
+          "1",
+          "2"
+        ],
+        "1 ⽂⾔⽂阅读核⼼必备知识": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "2 ⽂⾔⽂阅读题型⽅法技巧": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16"
+        ],
+        "1 古诗阅读核⼼必备知识": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "2 古诗阅读题型⽅法技巧": [
+          "1",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "1 名篇名句默写题型⽅法技巧": [
+          "1"
+        ],
+        "1 语⾔⽂字运⽤核⼼必备知识": [
+          "1",
+          "2"
+        ],
+        "2 语⾔⽂字运⽤题型⽅法技巧": [
+          "1",
+          "2",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "1",
+          "1"
+        ],
+        "1 名著阅读核⼼必备知识": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "1 议论⽂写作核⼼必备知识": [
+          "1",
+          "2"
+        ],
+        "2 议论⽂写作题型⽅法技巧": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11"
+        ]
+      },
+      "videoCount": 200
+    },
+    {
+      "courseId": "语文_高二",
+      "subject": "语文",
+      "grade": "高二",
+      "topics": {
+        "1 总览导学": [
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1"
+        ],
+        "2 题型方法": [
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "1"
+        ],
+        "3 真题演练": [
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "1",
+          "2"
+        ],
+        "2 核心知识": [
+          "1",
+          "2",
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "1",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "3"
+        ],
+        "3 题型方法": [
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "1",
+          "2",
+          "3",
+          "1",
+          "2",
+          "1",
+          "1",
+          "2",
+          "3",
+          "4",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "4 真题演练": [
+          "1",
+          "2",
+          "1",
+          "2",
+          "1",
+          "2",
+          "1",
+          "2",
+          "1",
+          "2",
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      "videoCount": 160
+    }
+  ]
+}  </script>
+  <script>
+    const courseData = JSON.parse(document.getElementById('course-data').textContent);
+
+    const state = {
+      loggedIn: false,
+      purchased: false,
+      planStatus: 'first',
+      purchaseDate: new Date(),
+      accountType: null,
+      purchasedSubjects: ['语文','数学'],
+      plannedSubjects: [],
+      baseInfo: {
+        grade: null,
+        schoolStage: null,
+        province: null
+      },
+      skipBaseInfo: false,
+      morePlanPrompt: null,
+      answers: {
+        grade: null,
+        schoolStage: null,
+        province: null,
+        subject: null,
+        season: null,
+        seasonYear: null,
+        topics: [],
+        examScore: null,
+        examTotal: null,
+        frequency: null,
+        dailyHours: Array(7).fill(0)
+      },
+      plan: null,
+      stepIndex: 0
+    };
+
+    const seasons = [
+      { key: '冬', name: '寒假学季', start: [1,1], end: [2,28] },
+      { key: '春', name: '春季学季', start: [3,1], end: [6,30] },
+      { key: '暑', name: '暑假学季', start: [7,1], end: [8,31] },
+      { key: '秋', name: '秋季学季', start: [9,1], end: [12,31] },
+    ];
+
+    const grades = ['初一','初二','初三','高一','高二','高三'];
+    const provincesAll = [
+      '北京','天津','上海','重庆',
+      '河北','山西','内蒙古','辽宁','吉林','黑龙江',
+      '江苏','浙江','安徽','福建','江西','山东',
+      '河南','湖北','湖南','广东','广西','海南',
+      '四川','贵州','云南','西藏','陕西','甘肃','青海','宁夏','新疆',
+      '香港','澳门','台湾'
+    ];
+
+    const entryCards = {
+      first: document.getElementById('entry-first'),
+      next: document.getElementById('entry-next'),
+      ongoing: document.getElementById('entry-ongoing')
+    };
+
+    function updateEntryVisibility() {
+      Object.values(entryCards).forEach(card => card.classList.remove('active'));
+      if (!state.loggedIn) {
+        entryCards.first.classList.add('active');
+        return;
+      }
+      entryCards[state.planStatus].classList.add('active');
+    }
+
+
+    function renderLoginCard() {
+      const card = document.getElementById('login-card');
+      if (!state.loggedIn) {
+        card.innerHTML = `
+          <h3>手机号验证码登录</h3>
+          <p class="login-hint">未登录用户无法进入学习战略制定</p>
+          <div class="login-form">
+            <label>选择账号</label>
+            <select id="login-account">
+              <option value="none">账号1（未购课）</option>
+              <option value="paid">账号2（已购课）</option>
+            </select>
+            <label>手机号</label>
+            <input id="login-phone" placeholder="请输入手机号" value="13800000000" />
+            <label>验证码</label>
+            <input id="login-code" placeholder="请输入验证码" value="123456" />
+          </div>
+          <button id="login-btn">登录</button>
+        `;
+      } else {
+        card.innerHTML = `
+          <h3>已登录</h3>
+          <p>欢迎回来，学习进度已同步。</p>
+          <button id="logout-btn" class="secondary">退出登录</button>
+        `;
+      }
+    }
+
+    function openLoginModal() {
+      renderLoginCard();
+      document.getElementById('login-mask').classList.add('active');
+      const loginBtn = document.getElementById('login-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+      if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+          const accountSelect = document.getElementById('login-account');
+          state.accountType = accountSelect ? accountSelect.value : null;
+          state.purchased = state.accountType === 'paid';
+          state.purchasedSubjects = state.purchased ? ['语文','数学'] : [];
+          state.loggedIn = true;
+          updateEntryVisibility();
+          closeLoginModal();
+        });
+      }
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          state.loggedIn = false;
+          updateEntryVisibility();
+          closeLoginModal();
+        });
+      }
+    }
+
+    function closeLoginModal() {
+      document.getElementById('login-mask').classList.remove('active');
+    }
+
+    document.getElementById('login-mask').addEventListener('click', (e) => {
+      if (e.target.id === 'login-mask') {
+        closeLoginModal();
+      }
+    });
+
+    document.querySelectorAll('.entry-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!state.loggedIn) {
+          openLoginModal();
+          return;
+        }
+        if (!state.purchased) {
+          alert('购买课程后即可进入学习战略规划');
+          return;
+        }
+        switchScreen('plan');
+        startPlanFlow();
+      });
+    });
+
+    document.getElementById('nav-mine').addEventListener('click', openLoginModal);
+    document.getElementById('nav-study').addEventListener('click', () => switchScreen('study'));
+    document.getElementById('study-date-hotspot').addEventListener('click', () => switchScreen('calendar'));
+    document.getElementById('nav-home-study').addEventListener('click', () => switchScreen('home'));
+    document.getElementById('nav-mine-study').addEventListener('click', openLoginModal);
+    document.getElementById('calendar-back').addEventListener('click', () => switchScreen('study'));
+    const backHomeBtn = document.getElementById('back-home');
+    backHomeBtn.addEventListener('click', () => switchScreen('home'));
+
+    function switchScreen(screen) {
+      document.body.classList.toggle('plan-mode', screen === 'plan');
+      document.getElementById('home-screen').classList.toggle('hidden', screen !== 'home');
+      document.getElementById('plan-screen').classList.toggle('hidden', screen !== 'plan');
+      document.getElementById('study-screen').classList.toggle('hidden', screen !== 'study');
+      document.getElementById('calendar-screen').classList.toggle('hidden', screen !== 'calendar');
+      document.getElementById('nav-home').classList.toggle('active', screen === 'home');
+      document.getElementById('nav-study').classList.toggle('active', screen === 'study');
+      const navHomeStudy = document.getElementById('nav-home-study');
+      const navStudyStudy = document.getElementById('nav-study-study');
+      if (navHomeStudy && navStudyStudy) {
+        navHomeStudy.classList.toggle('active', screen === 'home');
+        navStudyStudy.classList.toggle('active', screen === 'study');
+      }
+    }
+
+    function resetChat(clearAnswers = true) {
+      if (clearAnswers) {
+        state.answers = {
+          grade: null,
+          schoolStage: null,
+          province: null,
+          subject: null,
+          season: null,
+          seasonYear: null,
+          topics: [],
+          examScore: null,
+          examTotal: null,
+          frequency: null,
+          dailyHours: Array(7).fill(0)
+        };
+        state.plan = null;
+        state.stepIndex = 0;
+      }
+      document.getElementById('chat-body').innerHTML = '';
+    }
+
+    function addBotMessage(text) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble bot';
+      bubble.innerHTML = text;
+      document.getElementById('chat-body').appendChild(bubble);
+      scrollChat();
+    }
+
+    function addUserMessage(text) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble user';
+      bubble.textContent = text;
+      document.getElementById('chat-body').appendChild(bubble);
+      scrollChat();
+    }
+
+    function addHighlightMessage(text) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble highlight';
+      bubble.innerHTML = `
+        <div class="ai-speech">
+          <div class="ai-speech-avatar">
+            <img src="助教角色.png" alt="助教角色" />
+          </div>
+          <div class="ai-speech-bubble">${text}</div>
+        </div>
+      `;
+      document.getElementById('chat-body').appendChild(bubble);
+      scrollChat();
+    }
+
+    function addChoices(options, onSelect, selectedValue = null) {
+      const container = document.createElement('div');
+      container.className = 'choices';
+      options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.textContent = option.label;
+        if (selectedValue !== null && option.value === selectedValue) {
+          btn.classList.add('selected');
+        }
+        if (option.disabled) {
+          btn.disabled = true;
+          btn.style.opacity = 0.4;
+        }
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          onSelect(option.value, option.label);
+          container.remove();
+        });
+        container.appendChild(btn);
+      });
+      document.getElementById('chat-body').appendChild(container);
+      scrollChat();
+    }
+
+    function addPicker(options, onSelect, selectedValue = null) {
+      const container = document.createElement('div');
+      container.className = 'picker';
+      options.forEach(option => {
+        const item = document.createElement('div');
+        item.className = 'picker-item';
+        item.textContent = option.label;
+        if (selectedValue !== null && option.value === selectedValue) {
+          item.classList.add('selected');
+          setTimeout(() => item.scrollIntoView({block: 'center'}), 0);
+        }
+        item.addEventListener('click', () => {
+          onSelect(option.value, option.label);
+          container.remove();
+        });
+        container.appendChild(item);
+      });
+      document.getElementById('chat-body').appendChild(container);
+      scrollChat();
+    }
+
+    function addDualInput(labelLeft, labelRight, onSubmit, defaultLeft = '', defaultRight = '') {
+      const container = document.createElement('div');
+      container.className = 'input-row score-input';
+      const left = document.createElement('input');
+      left.placeholder = labelLeft;
+      if (defaultLeft) left.value = defaultLeft;
+      const right = document.createElement('input');
+      right.placeholder = labelRight;
+      if (defaultRight) right.value = defaultRight;
+      const btn = document.createElement('button');
+      btn.textContent = '提交';
+      btn.addEventListener('click', () => {
+        if (!left.value.trim() || !right.value.trim()) return;
+        onSubmit(left.value.trim(), right.value.trim());
+        container.remove();
+      });
+      container.appendChild(left);
+      container.appendChild(right);
+      container.appendChild(btn);
+      document.getElementById('chat-body').appendChild(container);
+      scrollChat();
+    }
+
+    function addWeeklyInputs(onSubmit, defaultValues = []) {
+      const container = document.createElement('div');
+      container.className = 'bubble bot';
+      container.style.background = '#fff';
+      container.style.border = '1px solid var(--line)';
+      const days = ['周一','周二','周三','周四','周五','周六','周日'];
+      const values = Array(7).fill(0).map((_, i) => Number(defaultValues[i] || 0));
+      container.innerHTML = '<strong>每天可以安排多少课时呢？</strong>';
+      const grid = document.createElement('div');
+      grid.className = 'weekly-grid';
+      days.forEach((day, idx) => {
+        const card = document.createElement('div');
+        card.className = 'day-card';
+        const label = document.createElement('label');
+        label.textContent = day;
+        const select = document.createElement('select');
+        ['选择课时','0','1','2','3','4','5'].forEach((opt, i) => {
+          const option = document.createElement('option');
+          option.value = i === 0 ? '' : opt;
+          option.textContent = opt;
+          select.appendChild(option);
+        });
+        if (values[idx] !== 0) {
+          select.value = String(values[idx]);
+        }
+        select.addEventListener('change', () => {
+          values[idx] = Number(select.value || 0);
+        });
+        card.appendChild(label);
+        card.appendChild(select);
+        grid.appendChild(card);
+      });
+      const submit = document.createElement('button');
+      submit.textContent = '提交';
+      submit.className = 'choice-btn selected';
+      submit.style.marginTop = '8px';
+      submit.addEventListener('click', () => {
+        onSubmit(values);
+        container.remove();
+      });
+      container.appendChild(grid);
+      container.appendChild(submit);
+      document.getElementById('chat-body').appendChild(container);
+      scrollChat();
+    }
+
+    function buildAiPrompt(payload) {
+      return `你是一个学习战略制定的AI助教。请基于以下用户信息生成一段个性化激励话语，语气积极但不夸张，强调可执行的努力方向。\n` +
+        `- 年级：${payload.grade}\n` +
+        `- 省份：${payload.province}\n` +
+        `- 学科：${payload.subject}\n` +
+        `- 学季：${payload.season}\n` +
+        `- 近期成绩：${payload.score}/${payload.total}（约${payload.percent}%）\n` +
+        `- 学习频次：${payload.frequency}\n` +
+        `- 每周可学习课时：${payload.weeklyHours}\n` +
+        `- 选择专题：${payload.topics.join('、')}\n` +
+        `请输出1段不超过70字的中文激励话术。`;
+    }
+
+    function mockAiMotivation(payload) {
+      const focus = payload.focusText;
+      return `看到你最近一次成绩是${payload.score}分，想提升到更高分，要重点关注${focus}课程。既然计划${payload.frequency}学习${payload.subject}，一周能学${payload.weeklyHours}课时，我已帮你排好节奏，坚持下去一定能达成目标！`;
+    }
+
+    async function requestAiMotivation(payload) {
+      const prompt = buildAiPrompt(payload);
+      if (window.AI_ENDPOINT) {
+        try {
+          const headers = { 'Content-Type': 'application/json' };
+          if (window.AI_KEY) headers['Authorization'] = `Bearer ${window.AI_KEY}`;
+          const res = await fetch(window.AI_ENDPOINT, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ prompt })
+          });
+          const data = await res.json();
+          if (data && data.text) return data.text;
+        } catch (e) {
+          return mockAiMotivation(payload);
+        }
+      }
+      return mockAiMotivation(payload);
+    }
+
+    function addTopicSelector(topics, disabledSet, onSubmit, selectedValues = []) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'bubble bot';
+      wrapper.style.background = '#fff';
+      wrapper.style.border = '1px solid var(--line)';
+      const input = document.createElement('input');
+      input.className = 'topic-search';
+      input.placeholder = '搜索专题关键词';
+
+      const panel = document.createElement('div');
+      panel.className = 'topic-panel';
+
+      const selected = new Set(selectedValues);
+      const groups = groupTopics(topics);
+
+      function renderList(keyword = '') {
+        panel.innerHTML = '';
+        Object.entries(groups).forEach(([group, items]) => {
+          const filtered = items.filter(item => item.includes(keyword));
+          if (!filtered.length) return;
+          const details = document.createElement('details');
+          details.className = 'topic-group';
+          details.open = true;
+          const summary = document.createElement('summary');
+          summary.textContent = `模块 ${group}（${filtered.length}）`;
+          details.appendChild(summary);
+          filtered.forEach(topic => {
+            const row = document.createElement('label');
+            row.className = 'topic-item';
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.disabled = disabledSet.has(topic);
+            checkbox.addEventListener('change', () => {
+              if (checkbox.checked) selected.add(topic);
+              else selected.delete(topic);
+            });
+            if (selected.has(topic)) checkbox.checked = true;
+            const span = document.createElement('span');
+            span.textContent = topic + (disabledSet.has(topic) ? '（已学完）' : '');
+            row.appendChild(checkbox);
+            row.appendChild(span);
+            details.appendChild(row);
+          });
+          panel.appendChild(details);
+        });
+      }
+
+      renderList();
+      input.addEventListener('input', () => renderList(input.value.trim()));
+
+      const actions = document.createElement('div');
+      actions.className = 'topic-actions';
+      const hint = document.createElement('div');
+      hint.style.fontSize = '12px';
+      hint.style.color = '#666';
+      hint.textContent = '通常选择 2-5 个专题即可';
+      const btn = document.createElement('button');
+      btn.textContent = '完成选择';
+      btn.addEventListener('click', () => {
+        if (!selected.size) return;
+        onSubmit(Array.from(selected));
+        wrapper.remove();
+      });
+      actions.appendChild(hint);
+      actions.appendChild(btn);
+
+      wrapper.appendChild(input);
+      wrapper.appendChild(panel);
+      wrapper.appendChild(actions);
+      document.getElementById('chat-body').appendChild(wrapper);
+      scrollChat();
+    }
+
+    function groupTopics(topics) {
+      const groups = {};
+      topics.forEach(topic => {
+        const match = topic.match(/^(\d+)/);
+        const key = match ? match[1] : '其他';
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(topic);
+      });
+      return groups;
+    }
+
+    function scrollChat() {
+      const body = document.getElementById('chat-body');
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function startPlanFlow(skipBaseInfo = false) {
+      resetChat(true);
+      state.skipBaseInfo = skipBaseInfo;
+      if (skipBaseInfo) {
+        state.answers.grade = state.baseInfo.grade;
+        state.answers.schoolStage = state.baseInfo.schoolStage;
+        state.answers.province = state.baseInfo.province;
+        state.stepIndex = 3;
+        renderFlow(3, false);
+      } else {
+        renderFlow(0, true);
+      }
+    }
+
+    function askGrade(interactive) {
+      addBotMessage('你好呀，我是你的AI助教，我们现在来规划一下学习战略吧！先告诉我你现在是哪个年级在读呀');
+      if (!interactive) {
+        addUserMessage(state.answers.grade || '');
+        return;
+      }
+      addChoices(grades.map(g => ({label: g, value: g})), (value) => {
+        state.answers.grade = value;
+        state.answers.schoolStage = value.startsWith('高') ? 'high' : 'middle';
+        state.baseInfo.grade = state.answers.grade;
+        state.baseInfo.schoolStage = state.answers.schoolStage;
+        addUserMessage(value);
+        renderFlow(state.stepIndex + 1);
+      }, state.answers.grade);
+    }
+
+    function askProvince(interactive) {
+      const stage = state.answers.schoolStage;
+      addBotMessage(`你是在${stage === 'high' ? '高考' : '中考'}哪个省份呀？向下滑动选择即可。`);
+      if (!interactive) {
+        addUserMessage(state.answers.province || '');
+        return;
+      }
+      addPicker(provincesAll.map(p => ({label: p, value: p})), (value) => {
+        state.answers.province = value;
+        state.baseInfo.province = value;
+        addUserMessage(value);
+        renderFlow(state.stepIndex + 1);
+      }, state.answers.province);
+    }
+
+    function askSubject(interactive) {
+      const grade = state.answers.grade;
+      let subjects = courseData.courses.filter(c => c.grade === grade).map(c => c.subject);
+      if (!subjects.length) {
+        subjects = [...new Set(courseData.courses.map(c => c.subject))];
+        addBotMessage('先告诉我这次想优先规划哪一科？');
+      } else {
+        addBotMessage('这次我们先从哪一科开始规划呢？');
+      }
+      if (!interactive) {
+        addUserMessage(state.answers.subject || '');
+        return;
+      }
+      addChoices(subjects.map(s => ({label: s, value: s})), (value) => {
+        state.answers.subject = value;
+        addUserMessage(value);
+        if (state.purchasedSubjects && !state.purchasedSubjects.includes(value)) {
+          state.purchasedSubjects.push(value);
+        }
+        renderFlow(state.stepIndex + 1);
+      }, state.answers.subject);
+    }
+
+    function getSeasonByDate(date) {
+      const month = date.getMonth() + 1;
+      return seasons.find(s => month >= s.start[0] && month <= s.end[0]);
+    }
+
+    function buildSeasonRange(seasonKey, year) {
+      const season = seasons.find(s => s.key === seasonKey);
+      const start = new Date(year, season.start[0]-1, season.start[1]);
+      const end = new Date(year, season.end[0]-1, season.end[1]);
+      return { start, end };
+    }
+
+    function resolveSeasonRange(selectedKey, baseDate) {
+      const currentSeason = getSeasonByDate(baseDate);
+      const currentIndex = seasons.findIndex(s => s.key === currentSeason.key);
+      const selectedIndex = seasons.findIndex(s => s.key === selectedKey);
+      let year = baseDate.getFullYear();
+      if (selectedIndex < currentIndex) {
+        year += 1;
+      }
+      return buildSeasonRange(selectedKey, year);
+    }
+
+    function askSeason(interactive) {
+      const today = new Date();
+      const purchaseDate = state.purchaseDate;
+      const currentSeason = getSeasonByDate(today);
+      const currentRange = buildSeasonRange(currentSeason.key, today.getFullYear());
+      const diffDays = Math.ceil((currentRange.end - purchaseDate) / (24*3600*1000));
+      let defaultSeason = currentSeason.key;
+      if (diffDays <= 7) {
+        defaultSeason = seasons[(seasons.indexOf(currentSeason) + 1) % seasons.length].key;
+      }
+      const nextSeason = seasons[(seasons.indexOf(currentSeason) + 1) % seasons.length].key;
+      const options = [currentSeason.key, nextSeason].filter((v, i, arr) => arr.indexOf(v) === i);
+      const seasonLabel = (k) => seasons.find(s => s.key === k).name;
+      addBotMessage('这次计划要覆盖哪个学季呢？我先给你推荐一个。');
+      if (!interactive) {
+        const label = state.answers.season ? seasonLabel(state.answers.season) : '';
+        addUserMessage(label);
+        return;
+      }
+      addChoices(options.map(k => ({label: seasonLabel(k) + (k === defaultSeason ? '（默认）' : ''), value: k})), (value) => {
+        state.answers.season = value;
+        state.answers.seasonYear = resolveSeasonRange(value, today).start.getFullYear();
+        addUserMessage(seasonLabel(value));
+        renderFlow(state.stepIndex + 1);
+      }, state.answers.season);
+    }
+
+    function askTopics(interactive) {
+      const course = courseData.courses.find(c => c.grade === state.answers.grade && c.subject === state.answers.subject);
+      const topicNames = Object.keys(course.topics);
+      const completed = new Set(topicNames.filter((_, idx) => idx % 7 === 0));
+      addBotMessage('这个学季你想重点学哪些专题？可以多选，已学完的我会帮你灰掉。');
+      if (!interactive) {
+        addUserMessage(state.answers.topics.join('、') || '');
+        return;
+      }
+      addTopicSelector(topicNames, completed, (values) => {
+        state.answers.topics = values;
+        addUserMessage(values.join('、'));
+        renderFlow(state.stepIndex + 1);
+      }, state.answers.topics);
+    }
+
+    function askExam(interactive) {
+      const subject = state.answers.subject;
+      addBotMessage(`顺便告诉我最近一次${subject}考试的得分和总分吧，我好更精准。`);
+      if (!interactive) {
+        if (state.answers.examScore && state.answers.examTotal) {
+          addUserMessage(`${state.answers.examScore}/${state.answers.examTotal}`);
+        } else {
+          addUserMessage('');
+        }
+        return;
+      }
+      addDualInput('得分', '总分', (score, total) => {
+        state.answers.examScore = score;
+        state.answers.examTotal = total;
+        addUserMessage(`${score}/${total}`);
+        renderFlow(state.stepIndex + 1);
+      }, state.answers.examScore || '', state.answers.examTotal || '');
+    }
+
+    function askFrequency(interactive) {
+      const subject = state.answers.subject;
+      addBotMessage(`这个学季你希望${subject}多久学一次呢？`);
+      const opts = ['每周','每两周','每三周','每四周'];
+      if (!interactive) {
+        addUserMessage(state.answers.frequency || '');
+        return;
+      }
+      addChoices(opts.map(o => ({label: o, value: o})), (value) => {
+        state.answers.frequency = value;
+        addUserMessage(value);
+        renderFlow(state.stepIndex + 1);
+      }, state.answers.frequency);
+    }
+
+    function askDailyHours(interactive) {
+      const subject = state.answers.subject;
+      addBotMessage(`你每天大概能安排多少${subject}课时？`);
+      if (!interactive) {
+        addUserMessage('已填写每天课时');
+        return;
+      }
+      addWeeklyInputs((values) => {
+        state.answers.dailyHours = values;
+        addUserMessage('已填写每天课时');
+        renderFlow(state.stepIndex + 1);
+      }, state.answers.dailyHours);
+    }
+
+    async function generatePlan() {
+      const score = Number(state.answers.examScore || 0);
+      const total = Number(state.answers.examTotal || 100);
+      const percent = total ? Math.round((score / total) * 100) : 0;
+      let focusText = '1~2星';
+      if (percent >= 60 && percent < 80) focusText = '2~3星';
+      if (percent >= 80) focusText = '3~4星';
+      const weeklyHours = state.answers.dailyHours.reduce((sum, v) => sum + Number(v || 0), 0);
+      const subject = state.answers.subject || '这门课';
+      const payload = {
+        grade: state.answers.grade,
+        province: state.answers.province,
+        subject,
+        season: state.answers.season,
+        score,
+        total,
+        percent,
+        frequency: state.answers.frequency,
+        weeklyHours,
+        topics: state.answers.topics,
+        focusText
+      };
+      const aiText = await requestAiMotivation(payload);
+      const highlightText = aiText
+        .replace(new RegExp(`${score}分`, 'g'), `<b>${score}分</b>`)
+        .replace(new RegExp(`${weeklyHours}个课时`, 'g'), `<b>${weeklyHours}个课时</b>`)
+        .replace(new RegExp(`${subject}`, 'g'), `<b>${subject}</b>`)
+        .replace(new RegExp(`${state.answers.frequency}`, 'g'), `<b>${state.answers.frequency}</b>`);
+      addHighlightMessage(highlightText);
+      const loading = document.createElement('div');
+      loading.className = 'loading';
+      loading.innerHTML = '<span></span><span></span><span></span><div style="font-size:12px;color:var(--muted)">计划生成中</div>';
+      document.getElementById('chat-body').appendChild(loading);
+
+      setTimeout(() => {
+        loading.remove();
+        state.plan = buildPlan();
+        showPlan();
+      }, 900);
+    }
+
+    function buildPlan() {
+      const course = courseData.courses.find(c => c.grade === state.answers.grade && c.subject === state.answers.subject);
+      const videos = [];
+      const difficultyBuckets = { 1: 0, 2: 0, 3: 0, 4: 0 };
+      state.answers.topics.forEach(topic => {
+        const points = course.topics[topic] || [];
+        points.forEach((point, idx) => {
+          const progress = (idx * 13) % 100;
+          if (progress >= 30) return;
+          const difficulty = (idx % 4) + 1;
+          difficultyBuckets[difficulty] += 1;
+          videos.push({ topic, point, difficulty });
+        });
+      });
+
+      const season = seasons.find(s => s.key === state.answers.season);
+      const today = new Date();
+      const year = state.answers.seasonYear || today.getFullYear();
+      const range = buildSeasonRange(season.key, year);
+      const currentSeason = getSeasonByDate(today);
+      if (currentSeason && currentSeason.key === season.key && range.start < today) {
+        range.start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      }
+      const planDays = [];
+      const freqMap = { '每周': 1, '每两周': 2, '每三周': 3, '每四周': 4 };
+      const freq = freqMap[state.answers.frequency] || 1;
+      let cursor = new Date(range.start);
+      let videoIndex = 0;
+
+      while (cursor <= range.end && videoIndex < videos.length) {
+        const weekIndex = Math.floor((cursor - range.start) / (7*24*3600*1000));
+        const shouldStudyWeek = weekIndex % freq === 0;
+        const dayOfWeek = cursor.getDay();
+        const dayIndex = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+        const capacity = state.answers.dailyHours[dayIndex] || 0;
+        const entries = [];
+        if (shouldStudyWeek && capacity > 0) {
+          for (let i = 0; i < capacity && videoIndex < videos.length; i += 1) {
+            entries.push(videos[videoIndex]);
+            videoIndex += 1;
+          }
+        }
+        planDays.push({ date: new Date(cursor), entries, isRest: !shouldStudyWeek, plannedCount: shouldStudyWeek ? capacity : 0 });
+        cursor.setDate(cursor.getDate() + 1);
+      }
+
+      return {
+        course,
+        season,
+        range,
+        videos,
+        planDays,
+        difficultyBuckets
+      };
+    }
+
+    function showPlan() {
+      const plan = state.plan;
+      addBotMessage('计划已生成完成，请你确认一下，有需要我们再调整。');
+
+      const backRow = document.getElementById('back-step-row');
+      if (backRow) backRow.style.display = 'none';
+      if (state.morePlanPrompt) {
+        state.morePlanPrompt.remove();
+        state.morePlanPrompt = null;
+      }
+      const card = document.createElement('div');
+      card.className = 'plan-card';
+      state.currentPlanCard = card;
+      card.innerHTML = `
+        <div class="plan-hero">
+          <div class="plan-avatar"><img src="刘雯韬.png" alt="老师头像" /></div>
+          <div>
+            <p class="plan-title">${plan.course.subject}${plan.course.grade} · ${plan.season.name}计划</p>
+            <p style="font-size:12px;color:var(--muted);margin:0;">计划周期：${formatDate(plan.range.start)} - ${formatDate(plan.range.end)}</p>
+          </div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><strong>${Math.min(4, state.answers.topics.length)}</strong><br/>模块</div>
+          <div class="metric"><strong>${state.answers.topics.length}</strong><br/>专题</div>
+          <div class="metric"><strong>${plan.videos.length}</strong><br/>视频</div>
+          <div class="metric"><strong>${state.answers.frequency}</strong><br/>频次</div>
+        </div>
+        <div class="difficulty-wrap" id="difficulty-wrap"></div>
+        <div id="calendar-container"></div>
+        <div class="plan-actions">
+          <button class="btn-secondary" id="edit-plan">调整计划</button>
+          <button class="btn-primary" id="go-learn">去学习</button>
+        </div>
+      `;
+      document.getElementById('chat-body').appendChild(card);
+      setPlanActionsEnabled(card, true);
+      renderDifficulty(plan);
+      renderCalendar(plan);
+      if (!state.plannedSubjects.includes(state.answers.subject)) {
+        state.plannedSubjects.push(state.answers.subject);
+      }
+      document.getElementById('edit-plan').addEventListener('click', () => {
+        if (state.currentPlanCard) {
+          state.currentPlanCard.remove();
+          state.currentPlanCard = null;
+        }
+        if (backRow) backRow.style.display = 'none';
+        if (state.morePlanPrompt) {
+          state.morePlanPrompt.remove();
+          state.morePlanPrompt = null;
+        }
+        setPlanActionsEnabled(state.currentPlanCard, false);
+        showAdjustMenu();
+      });
+      document.getElementById('go-learn').addEventListener('click', () => {
+        switchScreen('calendar');
+      });
+      scrollChat();
+      askMoreSubjects();
+    }
+
+    function setPlanActionsEnabled(card, enabled) {
+      if (!card) return;
+      const editBtn = card.querySelector('#edit-plan');
+      const learnBtn = card.querySelector('#go-learn');
+      [editBtn, learnBtn].forEach(btn => {
+        if (!btn) return;
+        btn.disabled = !enabled;
+        btn.style.opacity = enabled ? '1' : '0.5';
+        btn.style.pointerEvents = enabled ? 'auto' : 'none';
+      });
+    }
+
+    function askMoreSubjects() {
+      const remaining = (state.purchasedSubjects || []).filter(s => !state.plannedSubjects.includes(s));
+      if (!remaining.length) return;
+      const prompt = document.createElement('div');
+      prompt.className = 'bubble bot';
+      prompt.textContent = '还有其他学科要继续规划吗？';
+      document.getElementById('chat-body').appendChild(prompt);
+      state.morePlanPrompt = prompt;
+      if (state.currentPlanCard) {
+        setPlanActionsEnabled(state.currentPlanCard, false);
+      }
+      const options = remaining.map(s => ({label: s, value: s}));
+      options.push({label: '暂不计划', value: 'none'});
+      addChoices(options, (value) => {
+        if (value === 'none') {
+          addUserMessage('暂不计划');
+          if (state.currentPlanCard) {
+            setPlanActionsEnabled(state.currentPlanCard, true);
+          }
+          return;
+        }
+        addUserMessage(`继续规划${value}`);
+        state.answers.subject = value;
+        state.plannedSubjects.push(value);
+        startPlanFlow(true);
+      });
+    }
+
+    function renderDifficulty(plan) {
+      const wrap = document.getElementById('difficulty-wrap');
+      if (!wrap) return;
+      const total = plan.videos.length || 1;
+      const colors = ['#ffd8a8', '#ffc078', '#ff922b', '#f76707'];
+      const labels = ['1星', '2星', '3星', '4星'];
+      const counts = [1,2,3,4].map(k => plan.difficultyBuckets[k] || 0);
+      wrap.innerHTML = `
+        <div class="difficulty-title">难度占比</div>
+        <div class="difficulty-bar">
+          ${counts.map((c, i) => `
+            <div class="difficulty-seg">
+              <div class="difficulty-fill" style="width:${Math.round((c/total)*100)}%;background:${colors[i]}"></div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="difficulty-labels">
+          ${labels.map((label, i) => `<span>${label} ${Math.round((counts[i]/total)*100)}%</span>`).join('')}
+        </div>
+      `;
+    }
+
+    function renderCalendar(plan) {
+      const container = document.getElementById('calendar-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const start = new Date(plan.range.start.getFullYear(), plan.range.start.getMonth(), 1);
+      const end = new Date(plan.range.end.getFullYear(), plan.range.end.getMonth(), 1);
+      let cursor = new Date(start);
+      while (cursor <= end) {
+        const year = cursor.getFullYear();
+        const month = cursor.getMonth();
+        const wrap = document.createElement('div');
+        wrap.className = 'calendar-wrap';
+        wrap.innerHTML = `
+          <div class="calendar-title">${month + 1}月 学习安排</div>
+          <div class="weekday-row"></div>
+          <div class="calendar-grid"></div>
+        `;
+        const weekdayRow = wrap.querySelector('.weekday-row');
+        ['一','二','三','四','五','六','日'].forEach(d => {
+          const cell = document.createElement('div');
+          cell.textContent = d;
+          weekdayRow.appendChild(cell);
+        });
+        const grid = wrap.querySelector('.calendar-grid');
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-day';
+          const label = document.createElement('div');
+          label.className = 'date';
+          label.textContent = day;
+          cell.appendChild(label);
+          const date = new Date(year, month, day);
+          const entry = plan.planDays.find(d => sameDate(d.date, date));
+          if (entry && entry.plannedCount > 0) {
+            const count = document.createElement('div');
+            count.className = 'calendar-count';
+            count.textContent = `${entry.plannedCount}节`;
+            cell.appendChild(count);
+          } else if (entry && entry.isRest) {
+            const rest = document.createElement('div');
+            rest.className = 'calendar-rest';
+            rest.textContent = '空档';
+            cell.appendChild(rest);
+          }
+          grid.appendChild(cell);
+        }
+        container.appendChild(wrap);
+        cursor.setMonth(cursor.getMonth() + 1);
+      }
+    }
+
+    function sameDate(a, b) {
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+
+    function showAdjustMenu() {
+      const backRow = document.getElementById('back-step-row');
+      if (backRow) backRow.style.display = 'none';
+      addBotMessage('想调整哪一项？请直接选择。');
+      addChoices([
+        {label: '学季', value: 'season'},
+        {label: '专题', value: 'topics'},
+        {label: '学习频次', value: 'frequency'},
+        {label: '每日课时', value: 'hours'}
+      ], (value) => {
+        const map = {
+          season: '修改学季',
+          topics: '修改专题',
+          frequency: '修改学习频次',
+          hours: '修改每日课时'
+        };
+        addUserMessage(map[value] || '修改内容');
+        adjustQuestion(value);
+      });
+    }
+
+    function askContinueAdjust() {
+      addBotMessage('还需要继续调整吗？');
+      addChoices([
+        {label: '继续调整', value: 'continue'},
+        {label: '就这样生成', value: 'done'}
+      ], (value) => {
+        addUserMessage(value === 'continue' ? '继续调整' : '就这样生成');
+        if (value === 'continue') {
+          showAdjustMenu();
+        } else {
+          generatePlan();
+        }
+      });
+    }
+
+    function adjustQuestion(type) {
+      if (type === 'grade') {
+        addBotMessage('先改下年级吧，你现在是哪个年级？');
+        addChoices(grades.map(g => ({label: g, value: g})), (value) => {
+          state.answers.grade = value;
+          state.answers.schoolStage = value.startsWith('高') ? 'high' : 'middle';
+          addUserMessage(value);
+          askContinueAdjust();
+        }, state.answers.grade);
+        return;
+      }
+      if (type === 'province') {
+        addBotMessage('想换到哪个省份？向下滑动选择即可。');
+        addPicker(provincesAll.map(p => ({label: p, value: p})), (value) => {
+          state.answers.province = value;
+          addUserMessage(value);
+          askContinueAdjust();
+        }, state.answers.province);
+        return;
+      }
+      if (type === 'subject') {
+        const grade = state.answers.grade;
+        let subjects = courseData.courses.filter(c => c.grade === grade).map(c => c.subject);
+        if (!subjects.length) subjects = [...new Set(courseData.courses.map(c => c.subject))];
+        addBotMessage('这次想优先调整到哪一科？');
+        addChoices(subjects.map(s => ({label: s, value: s})), (value) => {
+          state.answers.subject = value;
+          addUserMessage(value);
+          askContinueAdjust();
+        }, state.answers.subject);
+        return;
+      }
+      if (type === 'season') {
+        const today = new Date();
+        const currentSeason = getSeasonByDate(today);
+        const nextSeason = seasons[(seasons.indexOf(currentSeason) + 1) % seasons.length].key;
+        const options = [currentSeason.key, nextSeason].filter((v, i, arr) => arr.indexOf(v) === i);
+        const seasonLabel = (k) => seasons.find(s => s.key === k).name;
+        addBotMessage('要调整到哪个学季？');
+        addChoices(options.map(k => ({label: seasonLabel(k), value: k})), (value) => {
+          state.answers.season = value;
+          state.answers.seasonYear = resolveSeasonRange(value, today).start.getFullYear();
+          addUserMessage(seasonLabel(value));
+          askContinueAdjust();
+        }, state.answers.season);
+        return;
+      }
+      if (type === 'topics') {
+        const course = courseData.courses.find(c => c.grade === state.answers.grade && c.subject === state.answers.subject);
+        const topicNames = Object.keys(course.topics);
+        const completed = new Set(topicNames.filter((_, idx) => idx % 7 === 0));
+        addBotMessage('重新选一下要学习的专题吧。');
+        addTopicSelector(topicNames, completed, (values) => {
+          state.answers.topics = values;
+          addUserMessage(values.join('、'));
+          askContinueAdjust();
+        }, state.answers.topics);
+        return;
+      }
+      if (type === 'exam') {
+        const subject = state.answers.subject;
+        addBotMessage(`更新一下最近一次${subject}考试成绩吧。`);
+        addDualInput('得分', '总分', (score, total) => {
+          state.answers.examScore = score;
+          state.answers.examTotal = total;
+          addUserMessage(`${score}/${total}`);
+          askContinueAdjust();
+        }, state.answers.examScore || '', state.answers.examTotal || '');
+        return;
+      }
+      if (type === 'frequency') {
+        const subject = state.answers.subject;
+        addBotMessage(`调整一下${subject}的学习频次吧。`);
+        const opts = ['每周','每两周','每三周','每四周'];
+        addChoices(opts.map(o => ({label: o, value: o})), (value) => {
+          state.answers.frequency = value;
+          addUserMessage(value);
+          askContinueAdjust();
+        }, state.answers.frequency);
+        return;
+      }
+      if (type === 'hours') {
+        const subject = state.answers.subject;
+        addBotMessage(`重新填写一下每天可安排的${subject}课时。`);
+        addWeeklyInputs((values) => {
+          state.answers.dailyHours = values;
+          addUserMessage('已更新每日课时');
+          askContinueAdjust();
+        }, state.answers.dailyHours);
+      }
+    }
+
+    function formatDate(date) {
+      return `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}`;
+    }
+
+    function renderFlow(targetIndex, showHistory = true) {
+      if (state.skipBaseInfo && targetIndex < 3) targetIndex = 3;
+      state.stepIndex = targetIndex;
+      resetChat(false);
+      const backRow = document.getElementById('back-step-row');
+      if (backRow) backRow.style.display = state.skipBaseInfo ? 'none' : 'flex';
+      const steps = [
+        { ask: askGrade },
+        { ask: askProvince },
+        { ask: askSubject },
+        { ask: askSeason },
+        { ask: askTopics },
+        { ask: askExam },
+        { ask: askFrequency },
+        { ask: askDailyHours },
+        { ask: () => generatePlan() }
+      ];
+      if (showHistory) {
+        for (let i = 0; i < targetIndex; i += 1) {
+          if (state.skipBaseInfo && i < 2) continue;
+          steps[i].ask(false);
+        }
+      }
+      if (targetIndex < steps.length) {
+        steps[targetIndex].ask(true);
+      }
+      updateBackButton();
+    }
+
+    function updateBackButton() {
+      const btn = document.getElementById('back-step');
+      if (!btn) return;
+      const enabled = state.skipBaseInfo ? state.stepIndex > 3 : state.stepIndex > 0;
+      btn.disabled = !enabled;
+      btn.classList.toggle('enabled', enabled);
+    }
+
+    function prevStep() {
+      if (state.skipBaseInfo && state.stepIndex <= 3) return;
+      if (state.stepIndex === 0) return;
+      renderFlow(state.stepIndex - 1, !state.skipBaseInfo);
+    }
+
+    const backStepBtn = document.getElementById('back-step');
+    if (backStepBtn) {
+      backStepBtn.addEventListener('click', prevStep);
+    }
+
+    updateEntryVisibility();
+  </script>
+</body>
+</html>
