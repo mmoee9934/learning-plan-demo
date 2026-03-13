@@ -715,6 +715,9 @@
       overflow: hidden;
       position: relative;
       min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
     }
 
     .assistant-hero {
@@ -792,11 +795,12 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      min-height: 520px;
-      max-height: calc(100vh - 360px);
+      min-height: 0;
+      flex: 1 1 auto;
       overflow-y: auto;
       scroll-behavior: smooth;
       background: transparent;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .bubble {
@@ -3635,22 +3639,25 @@
     }
 
     function addBotMessage(text) {
+      const wasAtBottom = isNearBottom();
       const bubble = document.createElement('div');
       bubble.className = 'bubble bot';
       bubble.innerHTML = text;
       document.getElementById('chat-body').appendChild(bubble);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
     }
 
     function addUserMessage(text) {
+      const wasAtBottom = isNearBottom();
       const bubble = document.createElement('div');
       bubble.className = 'bubble user';
       bubble.textContent = text;
       document.getElementById('chat-body').appendChild(bubble);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
     }
 
     function addHighlightMessage(text) {
+      const wasAtBottom = isNearBottom();
       const bubble = document.createElement('div');
       bubble.className = 'bubble highlight';
       bubble.innerHTML = `
@@ -3662,11 +3669,12 @@
         </div>
       `;
       document.getElementById('chat-body').appendChild(bubble);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
       return bubble;
     }
 
     function addChoices(options, onSelect, selectedValue = null) {
+      const wasAtBottom = isNearBottom();
       const container = document.createElement('div');
       container.className = 'choices';
       options.forEach(option => {
@@ -3688,10 +3696,11 @@
         container.appendChild(btn);
       });
       document.getElementById('chat-body').appendChild(container);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
     }
 
     function addPicker(options, onSelect, selectedValue = null) {
+      const wasAtBottom = isNearBottom();
       const container = document.createElement('div');
       container.className = 'picker';
       options.forEach(option => {
@@ -3709,10 +3718,11 @@
         container.appendChild(item);
       });
       document.getElementById('chat-body').appendChild(container);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
     }
 
     function addDualInput(labelLeft, labelRight, onSubmit, defaultLeft = '', defaultRight = '') {
+      const wasAtBottom = isNearBottom();
       const container = document.createElement('div');
       container.className = 'input-row score-input';
       const left = document.createElement('input');
@@ -3732,10 +3742,11 @@
       container.appendChild(right);
       container.appendChild(btn);
       document.getElementById('chat-body').appendChild(container);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
     }
 
     function addWeeklyInputs(onSubmit, defaultValues = []) {
+      const wasAtBottom = isNearBottom();
       const container = document.createElement('div');
       container.className = 'bubble bot weekly-bubble';
       container.style.background = '#fff';
@@ -3778,7 +3789,7 @@
       container.appendChild(grid);
       container.appendChild(submit);
       document.getElementById('chat-body').appendChild(container);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
     }
 
     function buildAiPrompt(payload) {
@@ -3820,6 +3831,7 @@
     }
 
     function addTopicSelector(topics, disabledSet, onSubmit, selectedValues = []) {
+      const wasAtBottom = isNearBottom();
       const wrapper = document.createElement('div');
       wrapper.className = 'bubble bot';
       wrapper.style.background = '#fff';
@@ -3889,7 +3901,7 @@
       wrapper.appendChild(panel);
       wrapper.appendChild(actions);
       document.getElementById('chat-body').appendChild(wrapper);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
     }
 
     function groupTopics(topics) {
@@ -3923,15 +3935,13 @@
       if (btn) btn.style.display = 'none';
     }
 
-    function scrollChat(force = false) {
+    function scrollChat(force = false, wasAtBottom = null) {
       const body = document.getElementById('chat-body');
       if (!body) return;
       if (!force && Date.now() < autoScrollLockUntil) return;
-      const nearBottom = isNearBottom();
-      if (!force && nearBottom) userStuckToBottom = true;
-      if (force || userStuckToBottom) {
+      const shouldScroll = force || (wasAtBottom !== null ? wasAtBottom : isNearBottom());
+      if (shouldScroll) {
         body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
-        userStuckToBottom = true;
         hideNewMessageTip();
       } else {
         showNewMessageTip();
@@ -4154,11 +4164,12 @@
         topics: state.answers.topics,
         focusText
       };
+      const wasAtBottom = isNearBottom();
       const loading = document.createElement('div');
       loading.className = 'loading';
       loading.innerHTML = '<div class="loading-spinner"></div><span></span><span></span><span></span><div class="loading-text">计划生成中…</div>';
       document.getElementById('chat-body').appendChild(loading);
-      scrollChat();
+      scrollChat(false, wasAtBottom);
       const aiText = await requestAiMotivation(payload);
       const highlightText = aiText
         .replace(new RegExp(`${score}分`, 'g'), `<b>${score}分</b>`)
@@ -4614,10 +4625,6 @@
         userStuckToBottom = isNearBottom();
         if (userStuckToBottom) hideNewMessageTip();
       });
-      const observer = new MutationObserver(() => {
-        scrollChat(false);
-      });
-      observer.observe(chatBody, { childList: true, subtree: true, characterData: true });
     }
 
     const newMsgBtn = document.getElementById('new-msg-btn');
