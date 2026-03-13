@@ -1397,10 +1397,11 @@
     .back-step-row {
       position: sticky;
       bottom: 0;
-      padding: 4px 18px 8px;
+      padding: 0 18px 8px;
       display: flex;
       justify-content: flex-end;
       background: transparent;
+      pointer-events: none;
     }
 
     .back-step-btn {
@@ -1411,6 +1412,8 @@
       cursor: pointer;
       background: #e8edf3;
       color: #9aa6b2;
+      pointer-events: auto;
+      margin-bottom: 6px;
     }
 
     .back-step-btn.enabled {
