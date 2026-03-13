@@ -793,6 +793,9 @@
       flex-direction: column;
       gap: 12px;
       min-height: 520px;
+      max-height: calc(100vh - 360px);
+      overflow-y: auto;
+      scroll-behavior: smooth;
       background: transparent;
     }
 
@@ -848,6 +851,7 @@
       height: 136px;
       object-fit: contain;
       display: block;
+      transform: scaleX(-1);
     }
 
     .ai-speech-bubble {
@@ -868,10 +872,10 @@
     .ai-speech-bubble::after {
       content: "";
       position: absolute;
-      left: -6px;
-      bottom: 16px;
-      width: 14px;
-      height: 14px;
+      left: -8px;
+      bottom: 18px;
+      width: 16px;
+      height: 16px;
       background: #fff7ec;
       border-left: 1px solid #ffd9b3;
       border-bottom: 1px solid #ffd9b3;
@@ -1033,17 +1037,18 @@
     .weekly-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 16px;
     }
 
     .day-card {
       border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 10px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: #fff;
+      gap: 12px;
     }
 
     .day-card label {
@@ -1055,10 +1060,11 @@
     .day-card select {
       border: 1px solid var(--line);
       border-radius: 10px;
-      padding: 6px 8px;
+      padding: 6px 10px;
       font-size: 12px;
       color: #666;
       background: #fafafa;
+      min-width: 88px;
     }
 
     .plan-card {
@@ -1249,10 +1255,14 @@
     }
 
     .loading {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 10px;
       margin-top: 8px;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
     }
 
     .loading span {
@@ -1264,6 +1274,41 @@
     }
     .loading span:nth-child(2) { animation-delay: 0.2s; }
     .loading span:nth-child(3) { animation-delay: 0.4s; }
+
+    .loading-spinner {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #dbe7ff;
+      border-top-color: var(--accent);
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .new-msg-btn {
+      position: fixed;
+      right: 24px;
+      bottom: 110px;
+      background: #1b7cff;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      box-shadow: 0 8px 20px rgba(27, 124, 255, 0.25);
+      cursor: pointer;
+      display: none;
+      z-index: 50;
+    }
 
     @keyframes pulse {
       0%, 100% { opacity: 0.2; transform: translateY(0); }
@@ -1496,6 +1541,7 @@
           </div>
         </div>
         <div class="chat-body" id="chat-body"></div>
+        <button class="new-msg-btn" id="new-msg-btn">有新消息</button>
         <div class="back-step-row" id="back-step-row">
           <button id="back-step" class="back-step-btn" disabled>返回上一问题</button>
         </div>
@@ -1749,18 +1795,9 @@
           "2.3.4.18",
           "2.3.4.19",
           "2.3.4.20",
-          "2.3.4.21",
-          "2.3.4.19",
-          "2.3.4.19",
-          "2.3.4.20",
           "2.3.4.21"
         ],
         "2.4 统计": [
-          "2.4.1.1",
-          "2.4.2.1",
-          "2.4.2.2",
-          "2.4.2.3",
-          "2.4.2.4",
           "2.4.1.1",
           "2.4.2.1",
           "2.4.2.2",
@@ -1773,17 +1810,9 @@
           "2.5.1.3",
           "2.5.1.4",
           "2.5.2.1",
-          "2.5.3.1",
-          "2.5.1.1",
-          "2.5.1.2",
-          "2.5.1.3",
-          "2.5.1.4",
-          "2.5.2.1",
-          "2.5.3.1",
           "2.5.3.1"
         ]
-      },
-      "videoCount": 160
+      }
     },
     {
       "courseId": "数学_高三",
@@ -2090,8 +2119,7 @@
           "10.1.1.4",
           "10.1.1.5"
         ]
-      },
-      "videoCount": 200
+      }
     },
     {
       "courseId": "数学_高二",
@@ -2259,29 +2287,15 @@
           "5.2.4.3",
           "5.2.4.4",
           "5.2.5.1",
-          "5.2.5.2",
-          "5.2.3.2",
-          "5.2.3.3",
-          "5.2.3.4",
-          "5.2.4.1",
-          "5.2.4.2",
-          "5.2.4.3",
-          "5.2.4.4",
-          "5.2.5.1",
           "5.2.5.2"
         ],
         "5.3 成对数据的统计分析": [
           "5.3.1.1",
           "5.3.2.1",
           "5.3.2.2",
-          "5.3.3.1",
-          "5.3.1.1",
-          "5.3.2.1",
-          "5.3.2.2",
           "5.3.3.1"
         ]
-      },
-      "videoCount": 160
+      }
     },
     {
       "courseId": "物理_高一",
@@ -2464,8 +2478,7 @@
           "2.4.5.6",
           "2.4.5.7"
         ]
-      },
-      "videoCount": 160
+      }
     },
     {
       "courseId": "物理_高三",
@@ -2720,8 +2733,7 @@
           "7.1.1.6",
           "7.1.1.7"
         ]
-      },
-      "videoCount": 200
+      }
     },
     {
       "courseId": "物理_高二",
@@ -2926,8 +2938,7 @@
           "4.5.3.1",
           "4.5.4.1"
         ]
-      },
-      "videoCount": 160
+      }
     },
     {
       "courseId": "语文_高一",
@@ -2936,55 +2947,18 @@
       "topics": {
         "1 核心知识": [
           "1",
-          "1",
-          "2",
-          "3",
-          "1",
-          "1",
-          "2",
-          "3",
-          "1",
           "2",
           "3",
           "4",
           "5",
           "6",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "1",
-          "2",
-          "3",
-          "3"
+          "7"
         ],
         "2 真题演练": [
-          "1",
-          "2",
           "1",
           "2"
         ],
         "1 高一信息性阅读题型方法技巧": [
-          "1",
-          "2",
-          "3",
           "1",
           "2",
           "3",
@@ -2993,41 +2967,13 @@
         ],
         "2 题型方法": [
           "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "1",
-          "1",
           "2",
           "3",
           "4",
           "5",
-          "6",
-          "1",
-          "1",
-          "2",
-          "3",
-          "1",
-          "1",
-          "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4"
+          "6"
         ],
         "3 真题演练": [
-          "1",
-          "2",
-          "1",
-          "2",
-          "1",
-          "2",
           "1",
           "2"
         ],
@@ -3039,18 +2985,13 @@
         ],
         "1 高一散文阅读核心必备知识": [
           "1",
-          "1",
           "2",
-          "3",
-          "1"
+          "3"
         ],
         "2 高一散文阅读题型方法技巧": [
           "1",
-          "1",
           "2",
-          "3",
-          "1",
-          "2"
+          "3"
         ],
         "1 高一文言文阅读课内重点篇目精讲": [
           "1",
@@ -3072,19 +3013,9 @@
           "2",
           "3",
           "4",
-          "5",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "3",
-          "4",
           "5"
         ],
         "3 高一文言文阅读题型方法技巧": [
-          "1",
-          "2",
           "1",
           "2",
           "3"
@@ -3116,8 +3047,6 @@
         ],
         "2 高一语用题型方法技巧": [
           "1",
-          "2",
-          "1",
           "2"
         ],
         "1 高一议论文写作题型方法技巧": [
@@ -3130,8 +3059,7 @@
           "7",
           "8"
         ]
-      },
-      "videoCount": 160
+      }
     },
     {
       "courseId": "语文_高三",
@@ -3160,9 +3088,6 @@
         "2 实⽤类⽂本阅读题型⽅法技巧": [
           "1",
           "2",
-          "3",
-          "1",
-          "2",
           "3"
         ],
         "1 ⼩说阅读核⼼必备知识": [
@@ -3171,29 +3096,6 @@
         ],
         "2 ⼩说阅读题型⽅法技巧": [
           "1",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "1",
-          "2",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "1",
           "2",
           "3",
           "4",
@@ -3201,15 +3103,12 @@
           "6",
           "7",
           "8",
-          "9",
-          "1",
-          "2"
+          "9"
         ],
         "1 信息性阅读核⼼必备知识": [
           "1"
         ],
         "2 信息性阅读题型⽅法技巧": [
-          "1",
           "1",
           "2",
           "3",
@@ -3218,18 +3117,10 @@
         ],
         "1 散⽂阅读核⼼必备知识": [
           "1",
-          "1",
           "2",
           "3"
         ],
         "2 散⽂阅读题型⽅法技巧": [
-          "1",
-          "1",
-          "2",
-          "1",
-          "2",
-          "3",
-          "4",
           "1",
           "2",
           "3",
@@ -3238,14 +3129,7 @@
           "6",
           "7",
           "8",
-          "9",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "1",
-          "2"
+          "9"
         ],
         "1 现代诗阅读核⼼必备知识": [
           "1",
@@ -3253,10 +3137,6 @@
           "3"
         ],
         "2 现代诗阅读题型⽅法技巧": [
-          "1",
-          "1",
-          "1",
-          "2",
           "1",
           "2"
         ],
@@ -3266,23 +3146,9 @@
           "3",
           "4",
           "5",
-          "6",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5"
+          "6"
         ],
         "2 ⽂⾔⽂阅读题型⽅法技巧": [
-          "1",
           "1",
           "2",
           "3",
@@ -3302,13 +3168,6 @@
         ],
         "1 古诗阅读核⼼必备知识": [
           "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "1",
           "2",
           "3",
           "4",
@@ -3316,15 +3175,6 @@
           "6"
         ],
         "2 古诗阅读题型⽅法技巧": [
-          "1",
-          "1",
-          "2",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
           "1",
           "2",
           "3",
@@ -3342,15 +3192,7 @@
         "2 语⾔⽂字运⽤题型⽅法技巧": [
           "1",
           "2",
-          "1",
-          "2",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "1",
-          "1"
+          "3"
         ],
         "1 名著阅读核⼼必备知识": [
           "1",
@@ -3372,20 +3214,11 @@
           "6",
           "7",
           "8",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
           "9",
           "10",
           "11"
         ]
-      },
-      "videoCount": 200
+      }
     },
     {
       "courseId": "语文_高二",
@@ -3393,155 +3226,25 @@
       "grade": "高二",
       "topics": {
         "1 总览导学": [
-          "1",
-          "1",
-          "1",
-          "1",
-          "1",
-          "1",
-          "1",
-          "1",
-          "1",
-          "1",
-          "1",
           "1"
         ],
         "2 题型方法": [
           "1",
           "2",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "1",
-          "2",
           "3",
           "4",
           "5",
           "6",
           "7",
-          "8",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "1",
-          "2",
-          "1",
-          "2",
-          "3",
-          "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "1"
+          "8"
         ],
         "3 真题演练": [
           "1",
           "2",
-          "1",
-          "2",
           "3",
-          "4",
-          "1",
-          "2",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "1",
-          "2"
+          "4"
         ],
         "2 核心知识": [
-          "1",
-          "2",
-          "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "1",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "3"
-        ],
-        "3 题型方法": [
-          "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "1",
-          "2",
-          "3",
-          "1",
-          "2",
-          "1",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
           "1",
           "2",
           "3",
@@ -3549,26 +3252,177 @@
           "5",
           "6"
         ],
+        "3 题型方法": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ],
         "4 真题演练": [
-          "1",
-          "2",
-          "1",
-          "2",
-          "1",
-          "2",
-          "1",
-          "2",
-          "1",
-          "2",
           "1",
           "2",
           "3"
         ]
-      },
-      "videoCount": 160
+      }
+    },
+    {
+      "courseId": "化学_初中",
+      "subject": "化学",
+      "grade": "初中",
+      "topics": {
+        "1.1实验": [
+          "1.1.1.1常考物理化学变化",
+          "1.1.1.2常见实验仪器"
+        ],
+        "1.2非金属元素": [
+          "1.2.1.1空气组成和氧气性质实验",
+          "1.2.1.2氧气含量测定实验",
+          "1.2.1.3氧气制备实验",
+          "1.2.2.1分子/原子/元素",
+          "1.2.3.1净水实验和电解水实验",
+          "1.2.3.2常考化合价",
+          "1.2.3.3化学式计算",
+          "1.2.3.4微观过程和陌生有机物",
+          "1.2.4.1质量守恒定律和方程式配平",
+          "1.2.4.2方程式的简单计算",
+          "1.2.5.1碳元素基础梳理",
+          "1.2.5.2二氧化碳制备实验",
+          "1.2.5.3碳的还原性实验（上）",
+          "1.2.5.4碳的还原性实验（下）",
+          "1.2.6.1燃烧",
+          "1.2.6.2化石燃料与环境污染"
+        ],
+        "1.3上册复习": [
+          "2.3.2.1实验仪器复习",
+          "2.3.2.2氧气实验复习",
+          "2.3.2.3水的实验复习",
+          "2.3.2.4碳的实验复习",
+          "2.3.2.5微观结构复习"
+        ],
+        "2.1金属与溶液": [
+          "2.1.1.1金属与合金",
+          "2.1.1.2金属活动性顺序",
+          "2.1.1.3金属与酸反应的图像问题",
+          "2.1.1.4金属反应成分分析",
+          "2.1.1.5金属计算题",
+          "2.1.2.1溶液和溶液配制",
+          "2.1.2.2溶解度曲线",
+          "2.1.2.3溶解度曲线中考难题",
+          "2.1.3.1酸的性质梳理",
+          "2.1.3.2碱的性质梳理",
+          "2.1.3.3盐的性质梳理",
+          "2.1.3.4氢氧化钠变质程度和反应顺序问题",
+          "2.1.3.5废液缸问题",
+          "2.1.3.6固体混合物组成分析",
+          "2.1.3.7溶液混合物组成分析",
+          "2.1.4.1化肥、营养物质",
+          "2.1.4.2元素、材料"
+        ],
+        "2.2下册复习": [
+          "2.2.1.1金属复习",
+          "2.2.1.2溶液复习",
+          "2.2.1.3酸碱盐复习",
+          "2.2.1.4六十个易错判断"
+        ],
+        "3.1中考题型突破": [
+          "3.1.1.1实验方案设计与评价",
+          "3.1.1.2陌生循环图",
+          "3.1.2.1科普阅读题",
+          "3.1.2.2框图推断题（上）",
+          "3.1.2.3框图推断题（下）",
+          "3.1.2.4工业流程题（上）",
+          "3.1.2.5工业流程题（中）",
+          "3.1.2.6工业流程题（下）",
+          "3.1.2.7实验探究题（上）",
+          "3.1.2.8实验探究题（下）",
+          "3.1.2.9化学方程式计算"
+        ],
+        "3.2中考真题讲解": [
+          "3.2.1.1广东卷最后4道大题",
+          "3.2.1.2江苏卷最后4道大题",
+          "3.2.1.3湖北卷最后4道大题",
+          "3.2.1.4安徽卷最后4道大题",
+          "3.2.1.5四川卷最后4道大题"
+        ]
+      }
+    },
+    {
+      "courseId": "数学_高中",
+      "subject": "数学",
+      "grade": "高中",
+      "topics": {
+        "1.1 集合与常用逻辑用语": [
+          "1.1.1.1 集合的概念与基本性质",
+          "1.1.1.2 集合间关系与运算",
+          "1.1.2.1 基于数轴的集合间关系问题",
+          "1.1.2.2 离散集合子集个数问题",
+          "1.1.3.1 充分条件与必要条件",
+          "1.1.4.1 全称量词与存在量词"
+        ],
+        "1.2 一元二次函数、方程和不等式": [
+          "1.2.1.1高次不等式",
+          "1.2.1.2 分式不等式",
+          "1.2.1.3 根式不等式",
+          "1.2.1.4 含参数的一元二次不等式",
+          "1.2.2.1 均值不等式的概念及运用（上）",
+          "1.2.2.2 均值不等式的概念及运用（下）"
+        ],
+        "1.3 函数的概念与性质": [
+          "1.3.1.1 函数的概念与表示方法",
+          "1.3.1.2 具体函数的定义域",
+          "1.3.1.3 抽象函数的定义域",
+          "1.3.1.4 待定系数法求函数解析式",
+          "1.3.1.5 换元法或配凑法求函数解析式",
+          "1.3.1.6 构造方程组求函数解析式",
+          "1.3.2.1 单调性的概念和证明",
+          "1.3.2.2 分式函数的最值与值域（上）",
+          "1.3.2.3 分式函数的最值与值域（下）",
+          "1.3.2.4 函数奇偶性的概念判断",
+          "1.3.2.5 奇偶性的应用（上）",
+          "1.3.2.6 奇偶性的应用（下）",
+          "1.3.2.7 奇偶性与对称性的关系",
+          "1.3.2.8 函数周期性的判断及应用"
+        ],
+        "1.4 指数函数与对数函数": [
+          "1.4.1.1 分数指数幂的运算",
+          "1.4.2.1 对数概念及运算法则",
+          "1.4.2.2 换底公式",
+          "1.4.3.1 指数函数的概念与性质",
+          "1.4.4.1 对数函数的概念与性质",
+          "1.4.4.2 指对幂比大小",
+          "1.4.5.1 幂函数的判断及性质应用"
+        ],
+        "1.5 函数的概念与性质": [
+          "1.5.1.1 二次恒成立",
+          "1.5.1.2 二次函数根的分布"
+        ],
+        "1.6 三角函数": [
+          "1.6.1.1 三角函数的基本概念（上）",
+          "1.6.1.2 三角函数的基本概念（下）",
+          "1.6.1.3 同角三角函数关系化简求值",
+          "1.6.2.1 三角函数诱导公式",
+          "1.6.3.1 和差角",
+          "1.6.3.2 二倍角公式",
+          "1.6.3.3 和差化积与积化和差",
+          "1.6.3.4 辅助角公式",
+          "1.6.4.1 三角函数的值域（上）",
+          "1.6.4.2 三角函数的值域（下）",
+          "1.6.4.3 正（余）弦函数的图像和性质（上）",
+          "1.6.4.4 正（余）弦函数的图像和性质（下）",
+          "1.6.4.5 与ω有关的性质问题（上）",
+          "1.6.4.6 与ω有关的性质问题（下）",
+          "1.6.4.7 正切函数的图像和性质"
+        ]
+      }
     }
   ]
-}  </script>
+}
+</script>
   <script>
     const courseData = JSON.parse(document.getElementById('course-data').textContent);
 
@@ -3759,6 +3613,7 @@
         state.stepIndex = 0;
       }
       document.getElementById('chat-body').innerHTML = '';
+      hideNewMessageTip();
     }
 
     function addBotMessage(text) {
@@ -4029,9 +3884,35 @@
       return groups;
     }
 
-    function scrollChat() {
+    let userStuckToBottom = true;
+
+    function isNearBottom() {
       const body = document.getElementById('chat-body');
-      body.scrollTop = body.scrollHeight;
+      if (!body) return true;
+      const threshold = 80;
+      return body.scrollHeight - body.scrollTop - body.clientHeight < threshold;
+    }
+
+    function showNewMessageTip() {
+      const btn = document.getElementById('new-msg-btn');
+      if (btn) btn.style.display = 'inline-flex';
+    }
+
+    function hideNewMessageTip() {
+      const btn = document.getElementById('new-msg-btn');
+      if (btn) btn.style.display = 'none';
+    }
+
+    function scrollChat(force = false) {
+      const body = document.getElementById('chat-body');
+      if (!body) return;
+      if (force || userStuckToBottom) {
+        body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
+        userStuckToBottom = true;
+        hideNewMessageTip();
+      } else {
+        showNewMessageTip();
+      }
     }
 
     function startPlanFlow(skipBaseInfo = false) {
@@ -4179,12 +4060,24 @@
         }
         return;
       }
+      const totalDefaults = {
+        '语文': 150,
+        '数学': 150,
+        '英语': 150,
+        '物理': 100,
+        '化学': 100,
+        '生物': 100,
+        '政治': 100,
+        '历史': 100,
+        '地理': 100
+      };
+      const defaultTotal = state.answers.examTotal || totalDefaults[subject] || 100;
       addDualInput('得分', '总分', (score, total) => {
         state.answers.examScore = score;
         state.answers.examTotal = total;
         addUserMessage(`${score}/${total}`);
         renderFlow(state.stepIndex + 1);
-      }, state.answers.examScore || '', state.answers.examTotal || '');
+      }, state.answers.examScore || '', defaultTotal);
     }
 
     function askFrequency(interactive) {
@@ -4247,8 +4140,9 @@
       addHighlightMessage(highlightText);
       const loading = document.createElement('div');
       loading.className = 'loading';
-      loading.innerHTML = '<span></span><span></span><span></span><div style="font-size:12px;color:var(--muted)">计划生成中</div>';
+      loading.innerHTML = '<div class="loading-spinner"></div><span></span><span></span><span></span><div class="loading-text">计划生成中…</div>';
       document.getElementById('chat-body').appendChild(loading);
+      scrollChat();
 
       setTimeout(() => {
         loading.remove();
@@ -4670,6 +4564,23 @@
     const backStepBtn = document.getElementById('back-step');
     if (backStepBtn) {
       backStepBtn.addEventListener('click', prevStep);
+    }
+
+    const chatBody = document.getElementById('chat-body');
+    if (chatBody) {
+      chatBody.addEventListener('scroll', () => {
+        userStuckToBottom = isNearBottom();
+        if (userStuckToBottom) hideNewMessageTip();
+      });
+      const observer = new MutationObserver(() => {
+        scrollChat(false);
+      });
+      observer.observe(chatBody, { childList: true, subtree: true, characterData: true });
+    }
+
+    const newMsgBtn = document.getElementById('new-msg-btn');
+    if (newMsgBtn) {
+      newMsgBtn.addEventListener('click', () => scrollChat(true));
     }
 
     updateEntryVisibility();
