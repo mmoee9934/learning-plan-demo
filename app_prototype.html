@@ -714,8 +714,9 @@
       border: none;
       overflow: hidden;
       position: relative;
-      min-height: 100vh;
       min-height: 100dvh;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
     }
@@ -4575,6 +4576,7 @@
       if (state.skipBaseInfo && targetIndex < 3) targetIndex = 3;
       const prevStep = state.stepIndex;
       const canAppend = showHistory && targetIndex === prevStep + 1;
+      const wasAtBottom = isNearBottom();
       state.stepIndex = targetIndex;
       const steps = [
         { ask: askGrade },
@@ -4602,6 +4604,9 @@
         steps[targetIndex].ask(true);
       }
       updateBackButton();
+      if (canAppend) {
+        requestAnimationFrame(() => scrollChat(false, wasAtBottom));
+      }
     }
 
     function updateBackButton() {
