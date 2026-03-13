@@ -1034,10 +1034,15 @@
       cursor: pointer;
     }
 
+    .weekly-bubble {
+      max-width: 100%;
+    }
+
     .weekly-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
+      width: 100%;
     }
 
     .day-card {
@@ -1055,6 +1060,7 @@
       font-size: 12px;
       font-weight: 600;
       color: #333;
+      min-width: 32px;
     }
 
     .day-card select {
@@ -1064,7 +1070,8 @@
       font-size: 12px;
       color: #666;
       background: #fafafa;
-      min-width: 88px;
+      min-width: 72px;
+      max-width: 100%;
     }
 
     .plan-card {
@@ -1531,6 +1538,14 @@
           <h2>学习战略制定</h2>
           <span></span>
         </div>
+        <div class="chat-body" id="chat-body"></div>
+        <button class="new-msg-btn" id="new-msg-btn">有新消息</button>
+        <div class="back-step-row" id="back-step-row">
+          <button id="back-step" class="back-step-btn" disabled>返回上一问题</button>
+        </div>
+      </div>
+
+      <template id="assistant-hero-template">
         <div class="assistant-hero">
           <div class="assistant-hero-content">
             <h3>你的 AI 助教 · 小航</h3>
@@ -1540,12 +1555,7 @@
             <img src="助教角色.png" alt="AI助教" style="width:140px;height:140px;object-fit:contain;" />
           </div>
         </div>
-        <div class="chat-body" id="chat-body"></div>
-        <button class="new-msg-btn" id="new-msg-btn">有新消息</button>
-        <div class="back-step-row" id="back-step-row">
-          <button id="back-step" class="back-step-btn" disabled>返回上一问题</button>
-        </div>
-      </div>
+      </template>
 
       <div class="study-page hidden" id="study-screen">
         <div class="study-status">
@@ -3613,6 +3623,10 @@
         state.stepIndex = 0;
       }
       document.getElementById('chat-body').innerHTML = '';
+      const heroTemplate = document.getElementById('assistant-hero-template');
+      if (heroTemplate) {
+        document.getElementById('chat-body').appendChild(heroTemplate.content.cloneNode(true));
+      }
       hideNewMessageTip();
     }
 
@@ -3645,6 +3659,7 @@
       `;
       document.getElementById('chat-body').appendChild(bubble);
       scrollChat();
+      return bubble;
     }
 
     function addChoices(options, onSelect, selectedValue = null) {
@@ -3718,7 +3733,7 @@
 
     function addWeeklyInputs(onSubmit, defaultValues = []) {
       const container = document.createElement('div');
-      container.className = 'bubble bot';
+      container.className = 'bubble bot weekly-bubble';
       container.style.background = '#fff';
       container.style.border = '1px solid var(--line)';
       const days = ['周一','周二','周三','周四','周五','周六','周日'];
@@ -4131,18 +4146,21 @@
         topics: state.answers.topics,
         focusText
       };
+      const loading = document.createElement('div');
+      loading.className = 'loading';
+      loading.innerHTML = '<div class="loading-spinner"></div><span></span><span></span><span></span><div class="loading-text">计划生成中…</div>';
+      document.getElementById('chat-body').appendChild(loading);
+      scrollChat();
       const aiText = await requestAiMotivation(payload);
       const highlightText = aiText
         .replace(new RegExp(`${score}分`, 'g'), `<b>${score}分</b>`)
         .replace(new RegExp(`${weeklyHours}个课时`, 'g'), `<b>${weeklyHours}个课时</b>`)
         .replace(new RegExp(`${subject}`, 'g'), `<b>${subject}</b>`)
         .replace(new RegExp(`${state.answers.frequency}`, 'g'), `<b>${state.answers.frequency}</b>`);
-      addHighlightMessage(highlightText);
-      const loading = document.createElement('div');
-      loading.className = 'loading';
-      loading.innerHTML = '<div class="loading-spinner"></div><span></span><span></span><span></span><div class="loading-text">计划生成中…</div>';
-      document.getElementById('chat-body').appendChild(loading);
-      scrollChat();
+      const bubble = addHighlightMessage(highlightText);
+      if (bubble && loading.parentNode) {
+        loading.parentNode.insertBefore(bubble, loading);
+      }
 
       setTimeout(() => {
         loading.remove();
