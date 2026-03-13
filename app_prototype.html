@@ -712,9 +712,12 @@
       border-radius: 0;
       box-shadow: none;
       border: none;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: visible;
       position: relative;
       min-height: 100vh;
+      min-height: 100dvh;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .assistant-hero {
@@ -797,6 +800,7 @@
       overflow-y: auto;
       scroll-behavior: smooth;
       background: transparent;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
 
     .bubble {
@@ -1392,7 +1396,7 @@
     .back-step-row {
       position: sticky;
       bottom: 0;
-      padding: 2px 16px calc(6px + env(safe-area-inset-bottom));
+      padding: 0 16px calc(4px + env(safe-area-inset-bottom));
       display: flex;
       justify-content: flex-start;
       background: transparent;
@@ -3629,6 +3633,7 @@
       if (heroTemplate) {
         document.getElementById('chat-body').appendChild(heroTemplate.content.cloneNode(true));
       }
+      getBottomAnchor();
       hideNewMessageTip();
     }
 
@@ -3907,8 +3912,8 @@
     function isNearBottom() {
       const body = document.getElementById('chat-body');
       if (!body) return true;
-      const threshold = 80;
-      return body.scrollHeight - body.scrollTop - body.clientHeight < threshold;
+      const diff = body.scrollHeight - body.scrollTop - body.clientHeight;
+      return Math.abs(diff) <= 1;
     }
 
     function showNewMessageTip() {
@@ -3921,6 +3926,20 @@
       if (btn) btn.style.display = 'none';
     }
 
+    function getBottomAnchor() {
+      const body = document.getElementById('chat-body');
+      if (!body) return null;
+      let anchor = document.getElementById('chat-bottom-anchor');
+      if (!anchor) {
+        anchor = document.createElement('div');
+        anchor.id = 'chat-bottom-anchor';
+        anchor.style.width = '1px';
+        anchor.style.height = '1px';
+      }
+      body.appendChild(anchor);
+      return anchor;
+    }
+
     function scrollChat(force = false) {
       const body = document.getElementById('chat-body');
       if (!body) return;
@@ -3928,7 +3947,12 @@
       const nearBottom = isNearBottom();
       if (!force && nearBottom) userStuckToBottom = true;
       if (force || userStuckToBottom) {
-        body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
+        const anchor = getBottomAnchor();
+        if (anchor) {
+          anchor.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        } else {
+          body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
+        }
         userStuckToBottom = true;
         hideNewMessageTip();
       } else {
