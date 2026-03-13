@@ -3633,7 +3633,8 @@
       if (heroTemplate) {
         document.getElementById('chat-body').appendChild(heroTemplate.content.cloneNode(true));
       }
-      getBottomAnchor();
+      const anchor = document.getElementById('chat-bottom-anchor');
+      if (anchor) anchor.remove();
       hideNewMessageTip();
     }
 
@@ -3926,20 +3927,6 @@
       if (btn) btn.style.display = 'none';
     }
 
-    function getBottomAnchor() {
-      const body = document.getElementById('chat-body');
-      if (!body) return null;
-      let anchor = document.getElementById('chat-bottom-anchor');
-      if (!anchor) {
-        anchor = document.createElement('div');
-        anchor.id = 'chat-bottom-anchor';
-        anchor.style.width = '1px';
-        anchor.style.height = '1px';
-      }
-      body.appendChild(anchor);
-      return anchor;
-    }
-
     function scrollChat(force = false) {
       const body = document.getElementById('chat-body');
       if (!body) return;
@@ -3947,12 +3934,7 @@
       const nearBottom = isNearBottom();
       if (!force && nearBottom) userStuckToBottom = true;
       if (force || userStuckToBottom) {
-        const anchor = getBottomAnchor();
-        if (anchor) {
-          anchor.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        } else {
-          body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
-        }
+        body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
         userStuckToBottom = true;
         hideNewMessageTip();
       } else {
