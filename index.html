@@ -533,10 +533,36 @@
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: 0 12px 28px rgba(20, 46, 88, 0.25);
-      display: none;
+      display: block;
     }
 
     .entry-card.active { display: block; }
+
+    .entry-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .entry-history {
+      background: linear-gradient(140deg, #0e1b33 0%, #142d4f 60%, #1c3b6b 100%);
+    }
+
+    .entry-todo {
+      background: #ffffff;
+      color: #1a2b44;
+      border: 1px solid #e5edf6;
+      box-shadow: 0 10px 24px rgba(20, 46, 88, 0.08);
+    }
+
+    .entry-todo .entry-title { color: #1a2b44; }
+    .entry-todo .entry-meta { color: #5b6b7c; }
+
+    .entry-todo .entry-action .entry-btn {
+      background: #1b7cff;
+      color: #fff;
+      border: none;
+    }
 
     .entry-card::before {
       content: "";
@@ -1440,33 +1466,16 @@
             <img src="首页banner.png" alt="首页banner" />
           </div>
 
-          <div id="entry-first" class="entry-card">
-            <div class="entry-title">学习战略地图·立即规划</div>
-            <div class="entry-meta">快速完成计划问答，预计用时 3 分钟</div>
+          <div id="history-entry" class="entry-card entry-history">
+            <div class="entry-title">历史学习战略</div>
+            <div class="entry-meta">查看已生成的学习战略与调整记录</div>
             <div class="entry-action">
-              <button class="entry-btn" data-entry="first">去制定</button>
+              <button class="entry-btn" data-entry="history">查看历史</button>
             </div>
           </div>
 
-          <div id="entry-next" class="entry-card">
-            <div class="entry-label">学习计划入口</div>
-            <div class="entry-title">学季即将结束 · 更新下一学季计划</div>
-            <div class="entry-meta">建议提前 7 天完成新学季节奏规划</div>
-            <div class="entry-action">
-              <span class="entry-status">待更新学季</span>
-              <button class="entry-btn" data-entry="next">去更新</button>
-            </div>
-          </div>
-
-          <div id="entry-ongoing" class="entry-card">
-            <div class="entry-label">学习计划入口</div>
-            <div class="entry-title">计划进行中 · 可进入调整</div>
-            <div class="entry-meta">查看计划进度或调整学习频次</div>
-            <div class="entry-action">
-              <span class="entry-status">进行中</span>
-              <button class="entry-btn" data-entry="ongoing">去查看</button>
-            </div>
-          </div>
+          <div class="section-title">学情表待办</div>
+          <div id="todo-entries" class="entry-list"></div>
 
           <div class="section-title">热门推荐</div>
           <div class="course-grid">
@@ -3495,19 +3504,36 @@
       '香港','澳门','台湾'
     ];
 
-    const entryCards = {
-      first: document.getElementById('entry-first'),
-      next: document.getElementById('entry-next'),
-      ongoing: document.getElementById('entry-ongoing')
-    };
-
-    function updateEntryVisibility() {
-      Object.values(entryCards).forEach(card => card.classList.remove('active'));
-      if (!state.loggedIn) {
-        entryCards.first.classList.add('active');
-        return;
+    function renderHomeEntries() {
+      const todoContainer = document.getElementById('todo-entries');
+      if (!todoContainer) return;
+      todoContainer.innerHTML = '';
+      const subjects = state.purchasedSubjects || [];
+      if (!subjects.length) {
+        const emptyCard = document.createElement('div');
+        emptyCard.className = 'entry-card entry-todo';
+        emptyCard.innerHTML = `
+          <div class="entry-title">暂无学情表待办</div>
+          <div class="entry-meta">购课后将自动生成对应学科的学情表填写入口</div>
+          <div class="entry-action">
+            <button class="entry-btn" data-entry="todo-empty">去看看</button>
+          </div>
+        `;
+        todoContainer.appendChild(emptyCard);
+      } else {
+        subjects.forEach(subject => {
+          const card = document.createElement('div');
+          card.className = 'entry-card entry-todo';
+          card.innerHTML = `
+            <div class="entry-title">${subject}学情表待填写</div>
+            <div class="entry-meta">填写后可生成专属学习战略</div>
+            <div class="entry-action">
+              <button class="entry-btn" data-entry="todo" data-subject="${subject}">去填写</button>
+            </div>
+          `;
+          todoContainer.appendChild(card);
+        });
       }
-      entryCards[state.planStatus].classList.add('active');
     }
 
 
@@ -3551,14 +3577,14 @@
           state.purchased = state.accountType === 'paid';
           state.purchasedSubjects = state.purchased ? ['语文','数学'] : [];
           state.loggedIn = true;
-          updateEntryVisibility();
+          renderHomeEntries();
           closeLoginModal();
         });
       }
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
           state.loggedIn = false;
-          updateEntryVisibility();
+          renderHomeEntries();
           closeLoginModal();
         });
       }
@@ -3574,19 +3600,32 @@
       }
     });
 
-    document.querySelectorAll('.entry-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.entry-btn');
+      if (!btn) return;
+      const entryType = btn.dataset.entry;
+      if (entryType === 'history') {
         if (!state.loggedIn) {
           openLoginModal();
           return;
         }
-        if (!state.purchased) {
-          alert('购买课程后即可进入学习战略规划');
-          return;
-        }
-        switchScreen('plan');
-        startPlanFlow();
-      });
+        alert('历史学习战略入口示例');
+        return;
+      }
+      if (!state.loggedIn) {
+        openLoginModal();
+        return;
+      }
+      if (entryType === 'todo-empty') {
+        alert('购课后可填写学情表并生成学习战略');
+        return;
+      }
+      if (!state.purchased) {
+        alert('购买课程后即可进入学习战略规划');
+        return;
+      }
+      switchScreen('plan');
+      startPlanFlow();
     });
 
     document.getElementById('nav-mine').addEventListener('click', openLoginModal);
@@ -4644,7 +4683,7 @@
       newMsgBtn.addEventListener('click', () => scrollChat(true));
     }
 
-    updateEntryVisibility();
+    renderHomeEntries();
   </script>
 </body>
 </html>
