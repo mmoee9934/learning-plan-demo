@@ -548,7 +548,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 18px 0 10px;
+      margin: 0 0 10px;
     }
 
     .plan-section-header h3 {
@@ -568,25 +568,53 @@
       cursor: pointer;
     }
 
+    .plan-section-card {
+      margin-top: 14px;
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(135deg, #0c1b33 0%, #122a4b 55%, #16345c 100%);
+      color: #e7f1ff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 34px rgba(10, 30, 60, 0.25);
+      border: 1px solid rgba(130, 180, 255, 0.2);
+    }
+
+    .plan-section-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, rgba(120, 200, 255, 0.25), transparent 55%);
+      pointer-events: none;
+    }
+
+    .plan-section-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
     .entry-todo {
       background: linear-gradient(135deg, #ffffff 0%, #f7fbff 70%, #eef6ff 100%);
       color: #1a2b44;
       border: 1px solid #d9e8ff;
-      box-shadow: 0 16px 32px rgba(30, 94, 255, 0.16);
+      box-shadow: 0 10px 22px rgba(30, 94, 255, 0.14);
       position: relative;
       overflow: hidden;
+      padding: 12px;
+      margin-top: 0;
     }
 
-    .entry-todo .entry-title { color: #1a2b44; }
-    .entry-todo .entry-meta { color: #5b6b7c; }
+    .entry-todo .entry-title { color: #1a2b44; font-size: 14px; }
+    .entry-todo .entry-meta { color: #5b6b7c; font-size: 11px; }
 
     .entry-todo .entry-action .entry-btn {
       background: linear-gradient(135deg, #1b7cff, #4aa3ff);
       color: #fff;
       border: none;
       font-weight: 600;
-      padding: 8px 14px;
-      box-shadow: 0 8px 18px rgba(27, 124, 255, 0.3);
+      padding: 6px 12px;
+      box-shadow: 0 6px 14px rgba(27, 124, 255, 0.28);
+      font-size: 12px;
     }
 
     .entry-todo::before {
@@ -1527,11 +1555,13 @@
             <img src="首页banner.png" alt="首页banner" />
           </div>
 
-          <div class="plan-section-header">
-            <h3>学习战略规划</h3>
-            <button class="history-link entry-btn" data-entry="history">历史战略</button>
+          <div class="plan-section-card">
+            <div class="plan-section-header">
+              <h3>学习战略规划</h3>
+              <button class="history-link entry-btn" data-entry="history">历史战略</button>
+            </div>
+            <div id="todo-entries" class="entry-list"></div>
           </div>
-          <div id="todo-entries" class="entry-list"></div>
 
           <div class="section-title">热门推荐</div>
           <div class="course-grid">
