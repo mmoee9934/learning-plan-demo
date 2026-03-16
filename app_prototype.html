@@ -545,14 +545,43 @@
     }
 
     .entry-history {
-      background: linear-gradient(140deg, #0e1b33 0%, #142d4f 60%, #1c3b6b 100%);
+      background: #f3f6fb;
+      color: #334155;
+      border: 1px solid #e1e8f2;
+      box-shadow: none;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+
+    .entry-history .entry-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1f2a37;
+    }
+
+    .entry-history .entry-meta {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .entry-history .entry-action {
+      margin-top: 6px;
+    }
+
+    .entry-history .entry-btn {
+      background: #e2e8f0;
+      color: #475569;
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
     }
 
     .entry-todo {
-      background: #ffffff;
+      background: linear-gradient(135deg, #ffffff 0%, #f7fbff 70%, #eef6ff 100%);
       color: #1a2b44;
-      border: 1px solid #e5edf6;
-      box-shadow: 0 10px 24px rgba(20, 46, 88, 0.08);
+      border: 1px solid #d9e8ff;
+      box-shadow: 0 14px 28px rgba(30, 94, 255, 0.12);
     }
 
     .entry-todo .entry-title { color: #1a2b44; }
@@ -1468,9 +1497,9 @@
 
           <div id="history-entry" class="entry-card entry-history">
             <div class="entry-title">历史学习战略</div>
-            <div class="entry-meta">查看已生成的学习战略与调整记录</div>
+            <div class="entry-meta">查看历史记录</div>
             <div class="entry-action">
-              <button class="entry-btn" data-entry="history">查看历史</button>
+              <button class="entry-btn" data-entry="history">查看</button>
             </div>
           </div>
 
