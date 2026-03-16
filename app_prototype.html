@@ -641,8 +641,8 @@
     }
 
     .todo-badge.update {
-      background: rgba(76, 110, 245, 0.12);
-      color: #3b5bdb;
+      background: rgba(47, 128, 237, 0.15);
+      color: #2f80ed;
     }
 
     .basic-info-mask {
@@ -3916,17 +3916,16 @@
       const planned = state.plannedSubjects || [];
       const newSubjects = subjects.filter(s => !planned.includes(s));
       const updateSubjects = state.planStatus === 'next' ? planned : [];
-      const addCards = (items, type) => {
+      const addCards = (items) => {
         items.forEach(subject => {
           const card = document.createElement('div');
           card.className = 'entry-card entry-todo';
-          const isUpdate = type === 'update';
           card.innerHTML = `
-            <div class="todo-badge ${isUpdate ? 'update' : ''}">${isUpdate ? '学季更新' : '首次提交'}</div>
-            <div class="entry-title">${subject}学情表${isUpdate ? '待更新' : '待填写'}</div>
-            <div class="entry-meta">${isUpdate ? '学季临近结束，更新新学季规划' : '提交学情后生成专属学习战略'}</div>
+            <div class="todo-badge update">学季更新</div>
+            <div class="entry-title">暑季-${subject}学情表待填写</div>
+            <div class="entry-meta">学季临近结束，更新新学季规划</div>
             <div class="entry-action">
-              <button class="entry-btn" data-entry="${isUpdate ? 'todo-update' : 'todo-new'}" data-subject="${subject}">${isUpdate ? '立即更新' : '立即填写'}</button>
+              <button class="entry-btn" data-entry="todo-update" data-subject="${subject}">立即更新</button>
             </div>
           `;
           todoContainer.appendChild(card);
@@ -3947,8 +3946,8 @@
         return;
       }
 
-      if (newSubjects.length) addCards(newSubjects, 'new');
-      if (updateSubjects.length) addCards(updateSubjects, 'update');
+      const allSubjects = [...newSubjects, ...updateSubjects];
+      if (allSubjects.length) addCards(allSubjects);
     }
 
 
