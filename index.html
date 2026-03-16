@@ -544,53 +544,85 @@
       gap: 12px;
     }
 
-    .entry-history {
-      background: #f3f6fb;
-      color: #334155;
-      border: 1px solid #e1e8f2;
-      box-shadow: none;
-      padding: 10px 12px;
-      margin-top: 10px;
+    .plan-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 18px 0 10px;
     }
 
-    .entry-history .entry-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #1f2a37;
+    .plan-section-header h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #1f2a44;
+      font-weight: 700;
     }
 
-    .entry-history .entry-meta {
-      font-size: 11px;
-      color: #64748b;
-      margin-top: 2px;
-    }
-
-    .entry-history .entry-action {
-      margin-top: 6px;
-    }
-
-    .entry-history .entry-btn {
-      background: #e2e8f0;
-      color: #475569;
-      font-size: 11px;
+    .history-link {
+      border: none;
+      background: #eef2f7;
+      color: #4b5563;
+      font-size: 12px;
       padding: 6px 10px;
       border-radius: 999px;
+      cursor: pointer;
     }
 
     .entry-todo {
       background: linear-gradient(135deg, #ffffff 0%, #f7fbff 70%, #eef6ff 100%);
       color: #1a2b44;
       border: 1px solid #d9e8ff;
-      box-shadow: 0 14px 28px rgba(30, 94, 255, 0.12);
+      box-shadow: 0 16px 32px rgba(30, 94, 255, 0.16);
+      position: relative;
+      overflow: hidden;
     }
 
     .entry-todo .entry-title { color: #1a2b44; }
     .entry-todo .entry-meta { color: #5b6b7c; }
 
     .entry-todo .entry-action .entry-btn {
-      background: #1b7cff;
+      background: linear-gradient(135deg, #1b7cff, #4aa3ff);
       color: #fff;
       border: none;
+      font-weight: 600;
+      padding: 8px 14px;
+      box-shadow: 0 8px 18px rgba(27, 124, 255, 0.3);
+    }
+
+    .entry-todo::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      bottom: 10px;
+      width: 4px;
+      background: linear-gradient(180deg, #ffb649, #ff7a00);
+      border-radius: 999px;
+    }
+
+    .todo-badge {
+      position: absolute;
+      right: 12px;
+      top: 10px;
+      background: rgba(255, 136, 0, 0.12);
+      color: #ff7a00;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+
+    .todo-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .todo-title {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+      margin-top: 4px;
     }
 
     .entry-card::before {
@@ -1495,15 +1527,10 @@
             <img src="首页banner.png" alt="首页banner" />
           </div>
 
-          <div id="history-entry" class="entry-card entry-history">
-            <div class="entry-title">历史学习战略</div>
-            <div class="entry-meta">查看历史记录</div>
-            <div class="entry-action">
-              <button class="entry-btn" data-entry="history">查看</button>
-            </div>
+          <div class="plan-section-header">
+            <h3>学习战略规划</h3>
+            <button class="history-link entry-btn" data-entry="history">历史战略</button>
           </div>
-
-          <div class="section-title">学情表待办</div>
           <div id="todo-entries" class="entry-list"></div>
 
           <div class="section-title">热门推荐</div>
@@ -3538,7 +3565,38 @@
       if (!todoContainer) return;
       todoContainer.innerHTML = '';
       const subjects = state.purchasedSubjects || [];
-      if (!subjects.length) {
+      const planned = state.plannedSubjects || [];
+      const newSubjects = subjects.filter(s => !planned.includes(s));
+      const updateSubjects = state.planStatus === 'next' ? planned : [];
+
+      const addGroup = (title, items, type) => {
+        const group = document.createElement('div');
+        group.className = 'todo-group';
+        const label = document.createElement('div');
+        label.className = 'todo-title';
+        label.textContent = title;
+        group.appendChild(label);
+        const list = document.createElement('div');
+        list.className = 'entry-list';
+        items.forEach(subject => {
+          const card = document.createElement('div');
+          card.className = 'entry-card entry-todo';
+          const isUpdate = type === 'update';
+          card.innerHTML = `
+            <div class="todo-badge">待办</div>
+            <div class="entry-title">${subject}学情表${isUpdate ? '待更新' : '待填写'}</div>
+            <div class="entry-meta">${isUpdate ? '学季临近结束，更新新学季规划' : '首次提交学情，生成专属学习战略'}</div>
+            <div class="entry-action">
+              <button class="entry-btn" data-entry="${isUpdate ? 'todo-update' : 'todo-new'}" data-subject="${subject}">${isUpdate ? '立即更新' : '立即填写'}</button>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+        group.appendChild(list);
+        todoContainer.appendChild(group);
+      };
+
+      if (!newSubjects.length && !updateSubjects.length) {
         const emptyCard = document.createElement('div');
         emptyCard.className = 'entry-card entry-todo';
         emptyCard.innerHTML = `
@@ -3549,19 +3607,14 @@
           </div>
         `;
         todoContainer.appendChild(emptyCard);
-      } else {
-        subjects.forEach(subject => {
-          const card = document.createElement('div');
-          card.className = 'entry-card entry-todo';
-          card.innerHTML = `
-            <div class="entry-title">${subject}学情表待填写</div>
-            <div class="entry-meta">填写后可生成专属学习战略</div>
-            <div class="entry-action">
-              <button class="entry-btn" data-entry="todo" data-subject="${subject}">去填写</button>
-            </div>
-          `;
-          todoContainer.appendChild(card);
-        });
+        return;
+      }
+
+      if (newSubjects.length) {
+        addGroup('首次提交学情', newSubjects, 'new');
+      }
+      if (updateSubjects.length) {
+        addGroup('学季更新', updateSubjects, 'update');
       }
     }
 
