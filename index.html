@@ -554,7 +554,7 @@
     .plan-section-header h3 {
       margin: 0;
       font-size: 16px;
-      color: #1f2a44;
+      color: #ffffff;
       font-weight: 700;
     }
 
@@ -638,6 +638,232 @@
       font-weight: 700;
       padding: 4px 8px;
       border-radius: 999px;
+    }
+
+    .todo-badge.update {
+      background: rgba(76, 110, 245, 0.12);
+      color: #3b5bdb;
+    }
+
+    .basic-info-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 16, 28, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .basic-info-mask.active { display: flex; }
+
+    .basic-info-card {
+      width: 86%;
+      max-width: 360px;
+      background: #fff;
+      border-radius: 22px;
+      padding: 20px 18px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(12, 28, 54, 0.2);
+    }
+
+    .basic-info-card h3 {
+      margin: 6px 0 6px;
+      color: #ff7a00;
+      font-size: 16px;
+    }
+
+    .basic-info-card p {
+      margin: 0 0 14px;
+      font-size: 12px;
+      color: #5b6b7c;
+    }
+
+    .basic-info-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .basic-info-form label {
+      font-size: 12px;
+      color: #7a8796;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .basic-info-form select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #e7edf5;
+      background: #fff;
+      font-size: 13px;
+    }
+
+    .basic-info-submit {
+      margin-top: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 12px;
+      background: linear-gradient(135deg, #ff9b4a, #ff7a00);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .profile-page {
+      background: #f7f3ef;
+      min-height: 100dvh;
+      padding-bottom: 24px;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 16px 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #2b3648;
+    }
+
+    .profile-header button {
+      border: none;
+      background: #eef2f7;
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .profile-card {
+      margin: 12px 16px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 10px 24px rgba(20, 46, 88, 0.08);
+    }
+
+    .profile-item {
+      margin-bottom: 14px;
+    }
+
+    .profile-item h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: #1f2a44;
+    }
+
+    .profile-input,
+    .profile-select {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #e6edf4;
+      padding: 10px 12px;
+      font-size: 13px;
+      background: #fff;
+    }
+
+    .profile-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .profile-weekly {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .profile-weekly .day-card {
+      background: #fafafa;
+    }
+
+    .profile-submit {
+      margin: 16px;
+      width: calc(100% - 32px);
+      border: none;
+      border-radius: 999px;
+      padding: 12px;
+      background: linear-gradient(135deg, #ff9b4a, #ff7a00);
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .plan-loading-page,
+    .plan-preview-page {
+      background: #f7f3ef;
+      min-height: 100dvh;
+    }
+
+    .plan-loading-page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      color: #666;
+    }
+
+    .plan-preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+    }
+
+    .plan-preview-header h3 {
+      margin: 0;
+      font-size: 14px;
+      color: #2b3648;
+      font-weight: 600;
+    }
+
+    .plan-preview-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .plan-preview-actions button {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .plan-preview-actions .edit-btn {
+      background: #eef2f7;
+      color: #475569;
+    }
+
+    .plan-preview-actions .learn-btn {
+      background: linear-gradient(135deg, #1b7cff, #4aa3ff);
+      color: #fff;
+    }
+
+    .plan-preview-note {
+      padding: 0 16px 10px;
+      font-size: 12px;
+      color: #8b5e34;
+    }
+
+    .plan-preview-image {
+      padding: 0 12px 20px;
+    }
+
+    .plan-preview-image img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 12px 26px rgba(20, 46, 88, 0.12);
+      display: block;
     }
 
     .todo-group {
@@ -1555,7 +1781,7 @@
             <img src="首页banner.png" alt="首页banner" />
           </div>
 
-          <div class="plan-section-card">
+          <div id="strategy-section" class="plan-section-card">
             <div class="plan-section-header">
               <h3>学习战略规划</h3>
               <button class="history-link entry-btn" data-entry="history">历史战略</button>
@@ -1635,6 +1861,31 @@
         <div class="login-mask" id="login-mask">
           <div class="login-card" id="login-card"></div>
         </div>
+        <div class="basic-info-mask" id="basic-info-mask">
+          <div class="basic-info-card">
+            <div style="font-size:26px;">🎓</div>
+            <h3>开启伴学之旅</h3>
+            <p>请完善您的基础信息，定制专属学习计划</p>
+            <div class="basic-info-form">
+              <div>
+                <label>当前年级</label>
+                <select id="basic-grade">
+                  <option>初一</option>
+                  <option>初二</option>
+                  <option>初三</option>
+                  <option>高一</option>
+                  <option>高二</option>
+                  <option>高三</option>
+                </select>
+              </div>
+              <div>
+                <label>高考省份</label>
+                <select id="basic-province"></select>
+              </div>
+            </div>
+            <button class="basic-info-submit" id="basic-submit">开始使用</button>
+          </div>
+        </div>
       </div>
 
       <div class="plan-page hidden" id="plan-screen">
@@ -1647,6 +1898,63 @@
         <button class="new-msg-btn" id="new-msg-btn">有新消息</button>
         <div class="back-step-row" id="back-step-row">
           <button id="back-step" class="back-step-btn" disabled>返回上一问题</button>
+        </div>
+      </div>
+
+      <div class="profile-page hidden" id="profile-screen">
+        <div class="profile-header">
+          <button id="profile-back">返回</button>
+          <span id="profile-title">学情信息填写</span>
+        </div>
+        <div class="profile-card">
+          <div class="profile-item">
+            <h4>1. 本学季计划学习学科章节（多选）</h4>
+            <div class="profile-select" id="profile-topics">请选择学习章节</div>
+          </div>
+          <div class="profile-item">
+            <h4>2. 最近一次考试成绩</h4>
+            <div class="profile-row">
+              <input class="profile-input" id="profile-score" placeholder="得分" />
+              <input class="profile-input" id="profile-total" placeholder="满分" />
+            </div>
+          </div>
+          <div class="profile-item">
+            <h4>3. 学习频率</h4>
+            <select class="profile-select" id="profile-frequency">
+              <option value="">请选择学习频率</option>
+              <option>每周</option>
+              <option>每两周</option>
+              <option>每三周</option>
+              <option>每四周</option>
+            </select>
+          </div>
+          <div class="profile-item">
+            <h4>4. 每天可学习时间（课时）</h4>
+            <div class="profile-weekly" id="profile-weekly"></div>
+          </div>
+          <div class="profile-item">
+            <h4>5. 预计本学季计划开始时间</h4>
+            <input type="date" class="profile-input" id="profile-start" />
+          </div>
+        </div>
+        <button class="profile-submit" id="profile-submit">提交信息</button>
+      </div>
+
+      <div class="plan-loading-page hidden" id="plan-loading-screen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">计划生成中…</div>
+      </div>
+
+      <div class="plan-preview-page hidden" id="plan-preview-screen">
+        <div class="plan-preview-header">
+          <h3>可联系伴学师进行计划解读</h3>
+          <div class="plan-preview-actions">
+            <button class="edit-btn" id="preview-edit">修改计划</button>
+            <button class="learn-btn" id="preview-learn">去学习</button>
+          </div>
+        </div>
+        <div class="plan-preview-image">
+          <img src="春季语文计划.png" alt="学习计划长图" />
         </div>
       </div>
 
@@ -3549,6 +3857,7 @@
       accountType: null,
       purchasedSubjects: ['语文','数学'],
       plannedSubjects: [],
+      basicInfoCompleted: false,
       baseInfo: {
         grade: null,
         schoolStage: null,
@@ -3590,7 +3899,16 @@
       '香港','澳门','台湾'
     ];
 
+    function fillBasicProvince() {
+      const select = document.getElementById('basic-province');
+      if (!select) return;
+      select.innerHTML = provincesAll.map(p => `<option>${p}</option>`).join('');
+    }
+
     function renderHomeEntries() {
+      const section = document.getElementById('strategy-section');
+      if (section) section.style.display = state.loggedIn ? 'block' : 'none';
+      if (!state.loggedIn) return;
       const todoContainer = document.getElementById('todo-entries');
       if (!todoContainer) return;
       todoContainer.innerHTML = '';
@@ -3598,32 +3916,21 @@
       const planned = state.plannedSubjects || [];
       const newSubjects = subjects.filter(s => !planned.includes(s));
       const updateSubjects = state.planStatus === 'next' ? planned : [];
-
-      const addGroup = (title, items, type) => {
-        const group = document.createElement('div');
-        group.className = 'todo-group';
-        const label = document.createElement('div');
-        label.className = 'todo-title';
-        label.textContent = title;
-        group.appendChild(label);
-        const list = document.createElement('div');
-        list.className = 'entry-list';
+      const addCards = (items, type) => {
         items.forEach(subject => {
           const card = document.createElement('div');
           card.className = 'entry-card entry-todo';
           const isUpdate = type === 'update';
           card.innerHTML = `
-            <div class="todo-badge">待办</div>
+            <div class="todo-badge ${isUpdate ? 'update' : ''}">${isUpdate ? '学季更新' : '首次提交'}</div>
             <div class="entry-title">${subject}学情表${isUpdate ? '待更新' : '待填写'}</div>
-            <div class="entry-meta">${isUpdate ? '学季临近结束，更新新学季规划' : '首次提交学情，生成专属学习战略'}</div>
+            <div class="entry-meta">${isUpdate ? '学季临近结束，更新新学季规划' : '提交学情后生成专属学习战略'}</div>
             <div class="entry-action">
               <button class="entry-btn" data-entry="${isUpdate ? 'todo-update' : 'todo-new'}" data-subject="${subject}">${isUpdate ? '立即更新' : '立即填写'}</button>
             </div>
           `;
-          list.appendChild(card);
+          todoContainer.appendChild(card);
         });
-        group.appendChild(list);
-        todoContainer.appendChild(group);
       };
 
       if (!newSubjects.length && !updateSubjects.length) {
@@ -3640,12 +3947,8 @@
         return;
       }
 
-      if (newSubjects.length) {
-        addGroup('首次提交学情', newSubjects, 'new');
-      }
-      if (updateSubjects.length) {
-        addGroup('学季更新', updateSubjects, 'update');
-      }
+      if (newSubjects.length) addCards(newSubjects, 'new');
+      if (updateSubjects.length) addCards(updateSubjects, 'update');
     }
 
 
@@ -3689,13 +3992,19 @@
           state.purchased = state.accountType === 'paid';
           state.purchasedSubjects = state.purchased ? ['语文','数学'] : [];
           state.loggedIn = true;
-          renderHomeEntries();
+          fillBasicProvince();
+          if (!state.basicInfoCompleted) {
+            document.getElementById('basic-info-mask').classList.add('active');
+          } else {
+            renderHomeEntries();
+          }
           closeLoginModal();
         });
       }
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
           state.loggedIn = false;
+          state.basicInfoCompleted = false;
           renderHomeEntries();
           closeLoginModal();
         });
@@ -3736,8 +4045,8 @@
         alert('购买课程后即可进入学习战略规划');
         return;
       }
-      switchScreen('plan');
-      startPlanFlow();
+      const subject = btn.dataset.subject || (state.purchasedSubjects[0] || '语文');
+      openProfileForm(subject);
     });
 
     document.getElementById('nav-mine').addEventListener('click', openLoginModal);
@@ -3750,9 +4059,13 @@
     backHomeBtn.addEventListener('click', () => switchScreen('home'));
 
     function switchScreen(screen) {
-      document.body.classList.toggle('plan-mode', screen === 'plan');
+      const planScreens = ['plan', 'profile', 'plan-loading', 'plan-preview'];
+      document.body.classList.toggle('plan-mode', planScreens.includes(screen));
       document.getElementById('home-screen').classList.toggle('hidden', screen !== 'home');
       document.getElementById('plan-screen').classList.toggle('hidden', screen !== 'plan');
+      document.getElementById('profile-screen').classList.toggle('hidden', screen !== 'profile');
+      document.getElementById('plan-loading-screen').classList.toggle('hidden', screen !== 'plan-loading');
+      document.getElementById('plan-preview-screen').classList.toggle('hidden', screen !== 'plan-preview');
       document.getElementById('study-screen').classList.toggle('hidden', screen !== 'study');
       document.getElementById('calendar-screen').classList.toggle('hidden', screen !== 'calendar');
       document.getElementById('nav-home').classList.toggle('active', screen === 'home');
@@ -4794,6 +5107,72 @@
     if (newMsgBtn) {
       newMsgBtn.addEventListener('click', () => scrollChat(true));
     }
+
+    function openProfileForm(subject) {
+      const title = document.getElementById('profile-title');
+      if (title) title.textContent = `${subject}学情信息填写`;
+      const totalDefaults = {
+        '语文': 150, '数学': 150, '英语': 150,
+        '物理': 100, '化学': 100, '生物': 100, '政治': 100, '历史': 100, '地理': 100
+      };
+      document.getElementById('profile-score').value = '';
+      document.getElementById('profile-total').value = totalDefaults[subject] || 100;
+      document.getElementById('profile-frequency').value = '';
+      document.getElementById('profile-start').value = '';
+      const weekly = document.getElementById('profile-weekly');
+      if (weekly) {
+        weekly.innerHTML = '';
+        ['周一','周二','周三','周四','周五','周六','周日'].forEach(day => {
+          const card = document.createElement('div');
+          card.className = 'day-card';
+          const label = document.createElement('label');
+          label.textContent = day;
+          const select = document.createElement('select');
+          ['选择课时','0','1','2','3','4','5'].forEach((opt, i) => {
+            const option = document.createElement('option');
+            option.value = i === 0 ? '' : opt;
+            option.textContent = opt;
+            select.appendChild(option);
+          });
+          card.appendChild(label);
+          card.appendChild(select);
+          weekly.appendChild(card);
+        });
+      }
+      const topics = document.getElementById('profile-topics');
+      if (topics) topics.textContent = '请选择学习章节';
+      switchScreen('profile');
+    }
+
+    document.getElementById('basic-submit').addEventListener('click', () => {
+      const grade = document.getElementById('basic-grade').value;
+      const province = document.getElementById('basic-province').value;
+      state.baseInfo.grade = grade;
+      state.baseInfo.schoolStage = grade.startsWith('高') ? 'high' : 'middle';
+      state.baseInfo.province = province;
+      state.basicInfoCompleted = true;
+      document.getElementById('basic-info-mask').classList.remove('active');
+      renderHomeEntries();
+    });
+
+    document.getElementById('profile-back').addEventListener('click', () => {
+      switchScreen('home');
+    });
+
+    document.getElementById('profile-submit').addEventListener('click', () => {
+      switchScreen('plan-loading');
+      setTimeout(() => {
+        switchScreen('plan-preview');
+      }, 1200);
+    });
+
+    document.getElementById('preview-edit').addEventListener('click', () => {
+      switchScreen('profile');
+    });
+
+    document.getElementById('preview-learn').addEventListener('click', () => {
+      switchScreen('calendar');
+    });
 
     renderHomeEntries();
   </script>
